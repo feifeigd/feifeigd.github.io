@@ -28,7 +28,7 @@ self.addEventListener('fetch', event=>{
             // 复制请求。请求是一个流，只能使用一次            
             let requestToCache = event.request.clone();
 
-            return fetch(requestToCacheevent.request).then(response=>{
+            return fetch(requestToCache).then(response=>{
                 if(!response || response.status !== 200)
                     return response;
                 // 复制响应，因为需要将其添加到缓存中，而且它还将用于最终返回响应
