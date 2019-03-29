@@ -1,0 +1,50 @@
+
+
+<html>
+
+<body>
+
+<div id="todo-list-example">
+    <form @submit.prevent="addNewTodo">
+        <label for="new-todo">Add a toto</label>
+        <input v-model="newTodoText" id="new-todo" placeholder="E.g. Feed the cat">
+        <button>Add</button>
+    </form>
+    <ul>
+        <li is="todo-item" v-for="(todo, index) in todos" :key="todo.id" :title="todo.title" @remove="todos.splice(index, 1)"></li>
+    </ul>
+464
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script>
+Vue.component('todo-item', {
+    template: `
+        <li>{{title}}<button @click="$emit('remove')">Remove</button></li>
+    `,
+    props: ['title'],
+});
+
+new Vue({
+    el: '#todo-list-example',
+    data: {
+        newTodoText: '',
+        todos: [
+            {id: 1, title: 'Do the dishes', },
+        ],
+        nextTodoId: 2,
+    },
+    methods: {
+        addNewTodo:function(){
+            this.todos.push({
+                id: this.nextTodoId++,
+                title: this.newTodoText,
+            });
+            this.newTodoText = '';
+        }
+    }
+});
+</script>
+
+</body>
+</html>
