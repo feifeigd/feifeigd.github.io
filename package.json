@@ -1,0 +1,16 @@
+{
+  "name": "feifeigd.github.io",
+  "version": "1.0.0",
+  "description": "www.d7kj.com",
+  "main": "index.js",
+  "repository": "git@github.com:feifeigd/feifeigd.github.io.git",
+  "author": "feifeigd <feifeigd@21cn.com>",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "devDependencies": {
+    "vuepress": "^2.0.0-beta.46"
+  }
+}
