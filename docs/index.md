@@ -4,7 +4,7 @@ title: 第七空间
 description: 个人博客
 ---
 
-[首页](./README.md)
+[首页](./index.md)
 [配置参考]()
 [快速上手]()
 [GitHub](https://github.com/feifeigd)
@@ -26,5 +26,3 @@ export default defineUserConfig({
 
 一加一等于：{{ 1 + 1 }}
 <span v-for="i in 3">span: {{ i }} </span>
-
-这是默认主题内置的`<Badge/>` 组件 <Badge text="演示" />
