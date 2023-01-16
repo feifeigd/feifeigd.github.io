@@ -7,10 +7,11 @@
   "author": "feifeigd <feifeigd@21cn.com>",
   "license": "MIT",
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "devDependencies": {
-    "vuepress": "^2.0.0-beta.46"
+    "vitepress": "^1.0.0-alpha.36"
   }
 }
