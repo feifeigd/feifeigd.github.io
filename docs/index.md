@@ -5,8 +5,32 @@ description: 个人博客
 sidebar: auto
 # 禁用导航条
 # navbar: false
+
 # 页面布局 doc home page
 layout: home 
+
+hero:
+    name: d7kj 个人博客
+    text: 个人静态网站
+    # tagline: Lorem ipsum...
+    actions:
+    - theme: brand
+      text: Get Started
+      link: /guide/what-is-vitepress
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/feifeigd
+
+features:
+  - icon: ⚡️
+    title: Vite, The DX that can't be beat
+    details: Lorem ipsum...
+  - icon: 🖖
+    title: Power of Vue meets Markdown
+    details: Lorem ipsum...
+  - icon: 🛠️
+    title: Simple and minimal, always
+    details: Lorem ipsum...
 ---
 
 [首页](./index.md)
@@ -68,6 +92,5 @@ Danger zone, do not proceed
 
 <Page/>
 <script setup>
-    import Page from './components/Page.vue';
 </script>
 

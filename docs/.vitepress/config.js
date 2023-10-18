@@ -28,8 +28,8 @@ module.exports = {
         ],
         footer: {
             message: '第七空间.',
-            copyright: 'Copyright © 2012-present d7kj'
-          }
+            copyright: 'Copyright © 2012-present d7kj',
+        }
     },
     markdown: {
         // options for markdown-it-anchor
