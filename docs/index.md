@@ -1,10 +1,12 @@
 ---
 lang: zh-CN
-title: 第七空间
+title: 首页
 description: 个人博客
 sidebar: auto
 # 禁用导航条
 # navbar: false
+# 页面布局 doc home page
+layout: home 
 ---
 
 [首页](./index.md)
@@ -14,6 +16,8 @@ sidebar: auto
 [快速上手]()
 
 [GitHub](https://github.com/feifeigd)
+
+[vitepress 文档](https://vitepress.dev/)
 
 # Hello VuePress :tada: ! :100:
 [[toc]]
@@ -66,3 +70,4 @@ Danger zone, do not proceed
 <script setup>
     import Page from './components/Page.vue';
 </script>
+
