@@ -27,7 +27,7 @@ module.exports = {
             },
         ],
         footer: {
-            message: '第七空间.',
+            message: '第七空间 d7kj.com.<div>备案号：<a href="http://beian.miit.gov.cn/">粤ICP备12018578号</a></div>',
             copyright: 'Copyright © 2012-present d7kj',
         }
     },

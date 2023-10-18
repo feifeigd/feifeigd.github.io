@@ -12,7 +12,7 @@ layout: home
 hero:
     name: d7kj 个人博客
     text: 个人静态网站
-    # tagline: Lorem ipsum...
+    tagline: 记录工作和学习过程中的笔记：C/C++，服务器开发，Linux笔记
     actions:
     - theme: brand
       text: Get Started
@@ -23,28 +23,26 @@ hero:
 
 features:
   - icon: ⚡️
-    title: Vite, The DX that can't be beat
-    details: Lorem ipsum...
+    title: 个人简介
+    details: 主要涉及技术：C/C++服务器开发，Linux
   - icon: 🖖
-    title: Power of Vue meets Markdown
-    details: Lorem ipsum...
+    title: 开发笔记
+    details: C/C++比较，Linux笔记
   - icon: 🛠️
-    title: Simple and minimal, always
-    details: Lorem ipsum...
+    title: github项目
+    details: 架构设计，设计模式，框架使用
 ---
 
+<VPTeamMembers size="small" :members="members" />
+
 [首页](./index.md)
-
-[配置参考]()
-
-[快速上手]()
 
 [GitHub](https://github.com/feifeigd)
 
 [vitepress 文档](https://vitepress.dev/)
 
 # Hello VuePress :tada: ! :100:
-[[toc]]
+
 
 ```ts{1,6-8}
 import { defaultTheme, defineUserConfig } from 'vuepress'
@@ -90,7 +88,21 @@ This is a dangerous warning
 Danger zone, do not proceed
 :::
 
-<Page/>
+<!-- <Page/> -->
+
 <script setup>
+import VPTeamMembers from "vitepress/theme";
+const members = [
+    {
+        avatar: 'https://www.github.com/yyx990803.png',
+        name: 'Evan You',
+        title: 'Creator',
+        links: [
+        { icon: 'github', link: 'https://github.com/yyx990803' },
+        { icon: 'twitter', link: 'https://twitter.com/youyuxi' }
+        ]
+    },
+];
+
 </script>
 
