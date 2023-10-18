@@ -30,7 +30,7 @@ export default defineUserConfig({
 一加一等于：{{ 1 + 1 }}
 <span v-for="i in 3">span: {{ i }} </span>
 
-![图片](./bg.jpg)
+![图片](/bg.jpg)
 
 table
 |Tables|Are|Cool|
