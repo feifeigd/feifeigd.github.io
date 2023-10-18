@@ -2,6 +2,9 @@
 lang: zh-CN
 title: 第七空间
 description: 个人博客
+sidebar: auto
+# 禁用导航条
+# navbar: false
 ---
 
 [首页](./index.md)
@@ -59,8 +62,7 @@ This is a dangerous warning
 Danger zone, do not proceed
 :::
 
+<Page/>
 <script setup>
-    import { useData } from 'vitepress'
-    const { page } = useData()
+    import Page from './components/Page.vue';
 </script>
-<pre>{{ page }}</pre>
