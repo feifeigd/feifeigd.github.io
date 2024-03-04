@@ -7,6 +7,9 @@ import { withPwa  } from "@vite-pwa/vitepress";
     title: "第七空间",
     description: "个人博客",
     
+    cleanUrls: true,
+
+    // 主题配置
     themeConfig: {
     //     // package.json 根目录下的 docs 目录
     //     sidebar: getSideBar("docs", {
@@ -63,6 +66,8 @@ import { withPwa  } from "@vite-pwa/vitepress";
 
         }
     },
+    // .md 目录与 .vitepress 目录同级
+    srcDir: ".",
     vite: {
         // 定义常量
         define: {

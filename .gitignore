@@ -17,3 +17,6 @@ _book
 
 .cache
 *.temp
+
+dist/
+cache/
