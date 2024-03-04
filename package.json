@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "tslib": "^2.6.2",
-    "vitepress": "^1.0.0-rc.22",
+    "vitepress": "^1.0.0-rc.44",
     "vitepress-plugin-autobar": "^1.0.8"
   }
 }

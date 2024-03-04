@@ -1,10 +1,12 @@
 
 import { getSideBar } from "vitepress-plugin-autobar";
+import { defineConfig } from "vitepress";
+import { withPwa  } from "@vite-pwa/vitepress";
 
-module.exports = {
+ export default withPwa(defineConfig({
     title: "第七空间",
     description: "个人博客",
-
+    
     themeConfig: {
     //     // package.json 根目录下的 docs 目录
     //     sidebar: getSideBar("docs", {
@@ -15,7 +17,15 @@ module.exports = {
         nav: [
             { text: 'Guide', link: '/guide' },
             { text: 'Configs', link: '/configs' },
-            { text: 'Github', link: 'https://github.com/feifeigd' }
+            { text: 'Github', link: 'https://github.com/feifeigd' },
+            // 下拉列表
+            {
+              text: 'Packages',
+              items: [
+                { text: 'Foo', link: '/packages/foo' },
+                { text: 'Bar', link: '/packages/bar' },
+              ],
+            },
         ],
         sidebar: [
             {
@@ -41,5 +51,22 @@ module.exports = {
         //   md.use(require('markdown-it-xxx'))
         }
 
-    }
-};
+    },
+
+    // Vite PWA Options
+    pwa: {
+        manifest: {
+            // fix WARNING: "theme_color" is missing from the web manifest, your application will not be able to be installed
+            theme_color: "#42b983",
+        },
+        workbox: {
+
+        }
+    },
+    vite: {
+        // 定义常量
+        define: {
+            __DATE__: `"${new Date().toString()}"`,
+        },
+    },
+}));

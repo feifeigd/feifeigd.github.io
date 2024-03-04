@@ -103,6 +103,8 @@ const members = [
         ]
     },
 ];
-
+// config.ts 定义的变量
+const date = __DATE__
 </script>
 
+<pre>Generated: {{ date }} </pre>

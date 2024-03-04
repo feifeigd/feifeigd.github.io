@@ -1,0 +1,7 @@
+{
+    // 推荐安装的 vscode 插件
+    "recommendations": [
+        "Vue.volar",
+        "Vue.vscode-typescript-vue-plugin"
+    ]
+}
