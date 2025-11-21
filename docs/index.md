@@ -7,6 +7,7 @@ sidebar: auto
 # navbar: false
 
 # 页面布局 doc home page
+# https://vitepress.dev/reference/default-theme-home-page
 layout: home 
 
 hero:
@@ -20,6 +21,9 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/feifeigd
+    - theme: alt
+      text: API Example
+      link: /api-examples
 
 features:
   - icon: ⚡️
