@@ -19,7 +19,10 @@ export default withPwa(defineConfig({
     //         ignoreDirectory: ["node_modules"],
     //     }),
         // siteTitle: false,   // 隐藏左上角标题
-        nav: [
+        nav: [      
+            { text: 'Home', link: '/' },
+            { text: 'Examples', link: '/markdown-examples' },
+
             // { text: 'Guide', link: '/guide' },
             { text: 'Configs', link: '/configs' },
             { text: 'Github', link: 'https://github.com/feifeigd' },
