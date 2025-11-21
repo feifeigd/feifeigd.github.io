@@ -3,7 +3,9 @@ import { getSideBar } from "vitepress-plugin-autobar";
 import { defineConfig } from "vitepress";
 import { withPwa  } from "@vite-pwa/vitepress";
 
- export default withPwa(defineConfig({
+// https://vitepress.dev/reference/site-config
+
+export default withPwa(defineConfig({
     title: "第七空间",
     description: "个人博客",
     
@@ -18,7 +20,7 @@ import { withPwa  } from "@vite-pwa/vitepress";
     //     }),
         // siteTitle: false,   // 隐藏左上角标题
         nav: [
-            { text: 'Guide', link: '/guide' },
+            // { text: 'Guide', link: '/guide' },
             { text: 'Configs', link: '/configs' },
             { text: 'Github', link: 'https://github.com/feifeigd' },
             // 下拉列表
@@ -31,14 +33,22 @@ import { withPwa  } from "@vite-pwa/vitepress";
             },
         ],
         sidebar: [
+            // {
+            //     text: 'Guide',
+            //     items: [
+            //         { text: 'Introduction', link: '/introduction' },
+            //         { text: 'Getting Started', link: '/getting-started' },
+            //     ]
+            // },
             {
-                text: 'Guide',
+                text: 'Examples',
                 items: [
-                    { text: 'Introduction', link: '/introduction' },
-                    { text: 'Getting Started', link: '/getting-started' },
+                    { text: 'Markdown Examples', link: '/markdown-examples', }, 
+                    { text: 'Runtime API Examples', link: '/api-examples', }, 
                 ]
             },
         ],
+        
         socialLinks: [
             {icon: 'github', link: 'https://github.com/vuejs/vitepress'}
         ],
