@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           # 选择要使用的 node 版本
-          node-version: '20'
+          node-version: '24'
           cache: yarn
       # 缓存 node_modules
       - name: Cache dependencies
