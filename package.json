@@ -6,18 +6,37 @@
   "repository": "git@github.com:feifeigd/feifeigd.github.io.git",
   "author": "feifeigd <feifeigd@21cn.com>",
   "license": "MIT",
-  "type": "module",
   "scripts": {
+    "docusaurus": "docusaurus start",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview",
     "docs:serve": "vitepress serve docs"
   },
   "devDependencies": {
+    "@docusaurus/module-type-aliases": "^3.10.1",
+    "@docusaurus/types": "^3.10.1",
     "@vite-pwa/vitepress": "^0.4.0",
     "tslib": "^2.6.2",
     "vite-plugin-pwa": "^0.19.2",
     "vitepress": "2.0.0-alpha.14",
     "vitepress-plugin-autobar": "^1.0.8"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.10.1",
+    "@docusaurus/preset-classic": "^3.10.1",
+    "@docusaurus/theme-classic": "^3.10.1",
+    "@docusaurus/theme-mermaid": "^3.10.1",
+    "@mdx-js/react": "^3.1.1",
+    "clsx": "^2.1.1",
+    "prism-react-renderer": "^2.4.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   }
 }
