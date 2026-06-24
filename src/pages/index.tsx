@@ -19,7 +19,7 @@ function HomepageHeader(): ReactNode {
                 <div className={styles.buttons}>
                     <Link
                         className="button button--secondary button--lg"
-                        href="/docs/intro">
+                        to="/docs/">
                         进入博客
                     </Link>
                 </div>
