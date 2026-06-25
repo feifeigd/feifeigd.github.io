@@ -1,19 +1,384 @@
+.page {
+  background:
+    linear-gradient(135deg, rgba(12, 33, 49, 0.05), transparent 34rem),
+    linear-gradient(180deg, #f7fafc 0%, #ffffff 36rem);
+  color: #17212b;
+}
 
-.heroBanner {
-    padding: 4rem 0;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.95fr);
+  gap: 3rem;
+  align-items: center;
+  min-height: calc(100vh - 4rem);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 3rem;
+}
+
+.heroContent {
+  max-width: 46rem;
+}
+
+.eyebrow,
+.sectionHeading p {
+  margin: 0 0 0.75rem;
+  color: #0f766e;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  margin: 0;
+  color: #101828;
+  font-size: 4.6rem;
+  line-height: 1;
+}
+
+.heroTitle span {
+  display: block;
+  margin-top: 1rem;
+  color: #1f2937;
+  font-size: 2rem;
+  line-height: 1.25;
+}
+
+.heroText {
+  max-width: 41rem;
+  margin: 1.5rem 0 0;
+  color: #475467;
+  font-size: 1.15rem;
+  line-height: 1.9;
+}
+
+.heroActions,
+.contactActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  margin-top: 2rem;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.9rem;
+  padding: 0 1.15rem;
+  border-radius: 0.45rem;
+  font-weight: 750;
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.primaryButton {
+  border: 1px solid #0f766e;
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #1f2937;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.primaryButton:hover {
+  color: #ffffff;
+  background: #115e59;
+}
+
+.secondaryButton:hover {
+  color: #0f766e;
+  border-color: #0f766e;
+}
+
+.heroVisual {
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.2);
+  border-radius: 0.75rem;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.14), transparent 18rem),
+    #111827;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.18);
+  color: #e5e7eb;
+}
+
+.visualHeader {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.visualHeader span {
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 999px;
+  background: #f59e0b;
+}
+
+.visualHeader span:nth-child(2) {
+  background: #22c55e;
+}
+
+.visualHeader span:nth-child(3) {
+  background: #38bdf8;
+}
+
+.visualGrid {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.visualGrid div {
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+}
+
+.visualGrid strong,
+.visualCode span {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    monospace;
+}
+
+.visualGrid p {
+  margin: 0.45rem 0 0;
+  color: #cbd5e1;
+}
+
+.visualCode {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0 1.25rem 1.25rem;
+  color: #93c5fd;
+  font-size: 0.9rem;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  max-width: 1180px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  background: #e5e7eb;
+}
+
+.metric {
+  min-height: 8rem;
+  padding: 1.4rem;
+  background: #ffffff;
+}
+
+.metric strong {
+  display: block;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+.metric span {
+  display: block;
+  margin-top: 0.55rem;
+  color: #667085;
+}
+
+.section,
+.splitSection,
+.contact {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 0;
+}
+
+.sectionHeading {
+  max-width: 44rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionHeading h2,
+.contact h2,
+.skillPanel h2 {
+  color: #101828;
+  font-size: 2rem;
+}
+
+.strengthGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.card,
+.project,
+.skillPanel {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 16px 44px rgba(15, 23, 42, 0.06);
+}
+
+.card {
+  padding: 1.25rem;
+}
+
+.card h3,
+.project h3 {
+  color: #17212b;
+  font-size: 1.1rem;
+}
+
+.card p,
+.project p,
+.timeline li {
+  color: #566475;
+  line-height: 1.8;
+}
+
+.projectList {
+  display: grid;
+  gap: 1rem;
+}
+
+.project {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr) 12rem;
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1.25rem;
+}
+
+.project span {
+  display: inline-block;
+  margin-bottom: 0.4rem;
+  color: #b45309;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.project strong {
+  justify-self: end;
+  color: #0f766e;
+  text-align: right;
+}
+
+.splitSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.timeline {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.timeline li::marker {
+  color: #0f766e;
+  font-weight: 800;
+}
+
+.skillPanel {
+  padding: 1.4rem;
+}
+
+.skillTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.skillTags span {
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.contact {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: center;
+  padding-bottom: 5rem;
+}
+
+.contact h2 {
+  max-width: 45rem;
+  margin: 0;
 }
 
 @media screen and (max-width: 996px) {
-    .heroBanner {
-        padding: 2rem;
-    }
+  .hero,
+  .splitSection,
+  .contact {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 3rem;
+  }
+
+  .heroTitle {
+    font-size: 3.2rem;
+  }
+
+  .heroTitle span {
+    font-size: 1.55rem;
+  }
+
+  .metrics,
+  .strengthGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project {
+    grid-template-columns: 1fr;
+  }
+
+  .project strong {
+    justify-self: start;
+    text-align: left;
+  }
 }
 
-.buttons {
-    align-items: center;
-    display: flex;
-    justify-content: center;
+@media screen and (max-width: 640px) {
+  .metrics,
+  .strengthGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero,
+  .section,
+  .splitSection,
+  .contact {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

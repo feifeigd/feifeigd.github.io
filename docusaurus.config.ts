@@ -3,146 +3,133 @@ import type * as Preset from '@docusaurus/preset-classic';
 import {themes as prismThemes} from 'prism-react-renderer';
 
 const config: Config = {
-    title: 'D7kj',
-    tagline: '大飞哥的个人博客',
+  title: 'd7kj',
+  tagline: '游戏服务器与 Web 后端工程师',
 
-    future: {
-        v4: true,
-    },
+  future: {
+    v4: true,
+  },
 
-    url: 'https://feifeigd.github.io',
-    // Set the /<baseUrl> pathname under which your site is served.
-    // For GitHub pages deployment, it is often '/<projectName>/'
-    baseUrl: '/',
+  url: 'https://feifeigd.github.io',
+  baseUrl: '/',
+  organizationName: 'd7kj',
+  projectName: 'feifeigd.github.io',
 
-    organizationName: 'd7kj',
-    projectName: 'feifeigd.github.io',
+  onBrokenLinks: 'throw',
 
-    onBrokenLinks: 'throw',
-    
-    markdown: {
-        mermaid: true,
-    },
+  markdown: {
+    mermaid: true,
+  },
 
-    themes: ['@docusaurus/theme-mermaid'],
+  themes: ['@docusaurus/theme-mermaid'],
 
-    i18n: {
-        defaultLocale: 'zh-Hans',
-        locales: ['zh-Hans'],
-    },
+  i18n: {
+    defaultLocale: 'zh-Hans',
+    locales: ['zh-Hans'],
+  },
 
-    presets: [
-        [
-            'classic',
-            {
-                docs: {
-                    sidebarPath: './sidebars.ts',
-                    editUrl: 'https://github.com/feifeigd/feifeigd.github.io/edit/main/',
-                },
-                blog: {
-                    showReadingTime: true,  // 显示阅读时间
-                    feedOptions: {
-                        type: 'all',
-                        xslt: true,
-                    },
-                    editUrl: 'https://github.com/feifeigd/feifeigd.github.io/edit/main/blog/',
-                    onInlineTags: 'warn',  // 显示标签
-                    onInlineAuthors: 'warn',  // 显示作者
-                    onUntruncatedBlogPosts: 'warn',  // 显示未截断的博客文章
-                },
-                theme: {
-                    customCss: './src/css/custom.css',
-                },
-            } satisfies Preset.Options,
-        ],
+  presets: [
+    [
+      'classic',
+      {
+        docs: {
+          sidebarPath: './sidebars.ts',
+          editUrl: 'https://github.com/feifeigd/feifeigd.github.io/edit/main/',
+        },
+        blog: {
+          showReadingTime: true,
+          feedOptions: {
+            type: 'all',
+            xslt: true,
+          },
+          editUrl: 'https://github.com/feifeigd/feifeigd.github.io/edit/main/blog/',
+          onInlineTags: 'warn',
+          onInlineAuthors: 'warn',
+          onUntruncatedBlogPosts: 'warn',
+        },
+        theme: {
+          customCss: './src/css/custom.css',
+        },
+      } satisfies Preset.Options,
     ],
+  ],
 
-    themeConfig: {
-        image: 'img/docusaurus-social-card.jpg',
-        colorMode: {
-            defaultMode: 'light',
-            disableSwitch: false,
-            respectPrefersColorScheme: true,
+  themeConfig: {
+    image: 'img/docusaurus-social-card.jpg',
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
+    navbar: {
+      title: 'd7kj',
+      logo: {
+        alt: 'd7kj Logo',
+        src: 'img/logo.svg',
+      },
+      items: [
+        {
+          type: 'docSidebar',
+          sidebarId: 'tutorialSidebar',
+          position: 'left',
+          label: '技术文档',
         },
-        // 顶部导航条
-        navbar: {
-            title: 'D7kj',
-            logo: {
-                alt: 'D7kj Logo',
-                src: 'img/logo.svg',  // static/img/logo.svg
+        {
+          to: '/blog',
+          label: '博客',
+          position: 'left',
+        },
+        {
+          href: 'https://github.com/feifeigd',
+          label: 'GitHub',
+          position: 'right',
+        },
+      ],
+    },
+    footer: {
+      style: 'dark',
+      links: [
+        {
+          title: '内容',
+          items: [
+            {
+              label: '技术文档',
+              to: '/docs/',
             },
-            items: [
-                {
-                    type: 'docSidebar',
-                    sidebarId: 'tutorialSidebar',
-                    position: 'left',
-                    label: 'Tutorial',
-                },
-                {
-                    to: '/blog',
-                    label: 'Blog',
-                    position: 'left',
-                },
-                {
-                    href: 'https://github.com/feifeigd/feifeigd.github.io',
-                    label: 'GitHub',
-                    position: 'right',
-                },
-            ],
+            {
+              label: '博客',
+              to: '/blog',
+            },
+          ],
         },
-        footer: {
-            style: 'dark',
-            links: [
-                {
-                    title: 'Docs',
-                    items: [
-                        {
-                            label: 'Tutorial',
-                            to: '/docs/',
-                        },
-                    ],
-                },
-                {
-                    title: 'Community',
-                    items: [
-                        {
-                            label: 'Stack Overflow',
-                            href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-                        },
-                        {
-                            label: 'Discord',
-                            href: 'https://discordapp.com/invite/docusaurus',
-                        },
-                        {
-                            label: 'X',
-                            href: 'https://x.com/docusaurus',
-                        },
-                    ],
-                },
-                {
-                    title: 'More',
-                    items: [
-                        {
-                            label: 'Blog',
-                            to: '/blog',
-                        },
-                        {
-                            label: 'GitHub',
-                            href: 'https://github.com/feifeigd/feifeigd.github.io',
-                        },
-                    ],
-                },
-            ],
-            copyright: `Copyright © ${new Date().getFullYear()} D7kj, Inc. Built with Docusaurus.`,
+        {
+          title: '联系',
+          items: [
+            {
+              label: 'Email',
+              href: 'mailto:502207456@qq.com',
+            },
+            {
+              label: '个人主页',
+              href: 'https://www.d7kj.com',
+            },
+            {
+              label: 'GitHub',
+              href: 'https://github.com/feifeigd',
+            },
+          ],
         },
-        prism: {
-            theme: prismThemes.github,
-            darkTheme: prismThemes.dracula,
-        },
-        mermaid: {
-            theme: {light: 'neutral', dark: 'dark'},
-        },        
-    } satisfies Preset.ThemeConfig,
-}
+      ],
+      copyright: `Copyright © ${new Date().getFullYear()} d7kj. Built with Docusaurus.`,
+    },
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
+    },
+    mermaid: {
+      theme: {light: 'neutral', dark: 'dark'},
+    },
+  } satisfies Preset.ThemeConfig,
+};
 
 export default config;
