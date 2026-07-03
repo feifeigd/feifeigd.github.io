@@ -1,5 +1,5 @@
 
-import { getSideBar } from "vitepress-plugin-autobar";
+// import { getSideBar } from "vitepress-plugin-autobar";
 import { defineConfig } from "vitepress";
 import { withPwa  } from "@vite-pwa/vitepress";
 
@@ -35,6 +35,9 @@ export default withPwa(defineConfig({
               ],
             },
         ],
+        search: {
+            provider: 'local'   // 本地搜索
+        },
         sidebar: [
             // {
             //     text: 'Guide',
