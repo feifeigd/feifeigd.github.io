@@ -1,5 +1,3 @@
-import CodeBlock from '@theme/CodeBlock';
-
 # Kubernetes v1.36 安装指南（Ubuntu 24.04）
 
 ## 📌 环境准备
@@ -45,10 +43,20 @@ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 ```
 
 ### 2. 主控节点部署
-<CodeBlock language="bash" source="./master-setup.sh" />
+
+```bash
+sudo bash ./master-setup.sh
+```
+
+完整脚本内容见 [master-setup.sh](./master-setup.sh)。
 
 ### 3. 工作节点部署
-<CodeBlock language="bash" source="./worker-setup.sh" />
+
+```bash
+sudo bash ./worker-setup.sh
+```
+
+完整脚本内容见 [worker-setup.sh](./worker-setup.sh)。
 
 ## 🔧 验证集群状态
 ```bash
