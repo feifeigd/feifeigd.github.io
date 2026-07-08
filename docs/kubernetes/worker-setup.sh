@@ -185,6 +185,28 @@ fi
 sudo apt-mark hold kubelet kubectl kubeadm
 log_ok "kubelet/kubectl/kubeadm 已安装"
 
+# ─── 清理网络插件残留 ─────────────────────────────────
+log_info "清理已有网络插件残留（Flannel 等）..."
+
+# 删除 flannel VXLAN 接口
+if ip link show flannel.1 &>/dev/null; then
+  sudo ip link delete flannel.1 2>/dev/null && log_ok "flannel.1 接口已删除" || true
+fi
+
+# 删除 flannel bridge
+if ip link show cni0 &>/dev/null; then
+  sudo ip link delete cni0 2>/dev/null && log_ok "cni0 接口已删除" || true
+fi
+
+# 清理 flannel iptables 链
+if sudo iptables -L FLANNEL-FWD &>/dev/null 2>&1; then
+  sudo iptables -D FORWARD -j FLANNEL-FWD 2>/dev/null || true
+  sudo iptables -X FLANNEL-FWD 2>/dev/null || true
+  log_ok "FLANNEL-FWD iptables 链已清理"
+fi
+
+sudo iptables-save 2>/dev/null | grep -v flannel | sudo iptables-restore 2>/dev/null || true
+
 # ─── Step 5: 启动 kubelet ─────────────────────────────
 log_info "[6/6] 启动 kubelet..."
 sudo systemctl enable --now kubelet 2>/dev/null || true
