@@ -12,7 +12,8 @@ log_err()   { echo -e "${RED}[ERR]${NC}   $*"; }
 APISERVER_ADDR="${1:-}"
 K8S_VERSION="${2:-v1.36.2}"
 IMAGE_REPO="${3:-registry.cn-hangzhou.aliyuncs.com/google_containers}"
-POD_CIDR="${4:-10.244.0.0/16}"
+POD_CIDR="${4:-10.0.0.0/16}"
+CILIUM_VERSION="${6:-v1.16.5}"
 PAUSE_VERSION="${5:-3.10}"
 
 # 从 v1.36.2 提取 v1.36（APT 仓库路径用）
@@ -24,6 +25,7 @@ echo " Version: $K8S_VERSION ($K8S_MINOR)"
 echo " Image Repo: $IMAGE_REPO"
 echo " Pod CIDR: $POD_CIDR"
 echo " Pause: $PAUSE_VERSION"
+echo " Cilium: $CILIUM_VERSION"
 echo "========================================"
 
 # ─── Step 0: 清理已有集群 ─────────────────────────────
@@ -90,7 +92,7 @@ server = "https://registry.k8s.io"
   capabilities = ["pull", "resolve"]
 EOF
 
-# 4) 配置 Docker Hub 镜像代理（Flannel 等第三方镜像用）
+# 4) 配置 Docker Hub 镜像代理（第三方镜像用）
 sudo mkdir -p /etc/containerd/certs.d/docker.io
 sudo tee /etc/containerd/certs.d/docker.io/hosts.toml > /dev/null <<EOF
 server = "https://docker.io"
@@ -99,7 +101,22 @@ server = "https://docker.io"
   capabilities = ["pull", "resolve"]
 EOF
 
-# 5) 配置 ghcr.io 镜像代理（Flannel CNI 插件用）
+# 5) 配置 quay.io 镜像代理（Cilium 用，国内优先走 USTC/NJU 镜像）
+sudo mkdir -p /etc/containerd/certs.d/quay.io
+sudo tee /etc/containerd/certs.d/quay.io/hosts.toml > /dev/null <<EOF
+server = "https://quay.io"
+
+[host."https://quay.mirrors.ustc.edu.cn"]
+  capabilities = ["pull", "resolve"]
+
+[host."https://quay.nju.edu.cn"]
+  capabilities = ["pull", "resolve"]
+
+[host."https://quay.dockerproxy.com"]
+  capabilities = ["pull", "resolve"]
+EOF
+
+# 6) 配置 ghcr.io 镜像代理（Cilium 等其他组件用）
 sudo mkdir -p /etc/containerd/certs.d/ghcr.io
 sudo tee /etc/containerd/certs.d/ghcr.io/hosts.toml > /dev/null <<EOF
 server = "https://ghcr.io"
@@ -235,42 +252,71 @@ if [ -n "${SUDO_USER:-}" ]; then
   log_ok "kubectl 已配置 (用户 $SUDO_USER)"
 fi
 
-# ─── 安装 CNI ─────────────────────────────────────────
-log_info "安装 Flannel CNI..."
-FLANNEL_URL="https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml"
+# ─── 安装 Cilium CNI ─────────────────────────────────────
+log_info "安装 Cilium CNI..."
 
-# 下载 Flannel YAML（多重代理）
-for src in \
-  "https://ghproxy.net/$FLANNEL_URL" \
-  "https://ghproxy.com/$FLANNEL_URL" \
-  "https://mirror.ghproxy.com/$FLANNEL_URL" \
-  "https://raw.gitmirror.com/flannel-io/flannel/master/Documentation/kube-flannel.yml" \
-  "$FLANNEL_URL"; do
-  if curl -fsSL --connect-timeout 10 --max-time 30 "$src" -o /tmp/kube-flannel.yml; then
-    log_ok "Flannel YAML 已下载"
-    break
-  fi
-done
-
-if [ ! -s /tmp/kube-flannel.yml ]; then
-  log_err "Flannel YAML 下载失败！请手动安装:"
-  log_err "  curl -L -o kube-flannel.yml $FLANNEL_URL"
-  log_err "  sudo kubectl apply -f kube-flannel.yml"
-  exit 1
-fi
-
-# 提取镜像并预拉取（保留原始 GHCR 地址，走 hosts.toml 代理）
-FLANNEL_IMAGES=$(grep -oP '(?<=image: ).*' /tmp/kube-flannel.yml | sort -u)
-log_info "预拉取 Flannel 镜像:"
-echo "$FLANNEL_IMAGES"
-for img in $FLANNEL_IMAGES; do
+# 预拉取 Cilium 镜像
+log_info "预拉取 Cilium 镜像..."
+CILIUM_IMG_TAG="${CILIUM_VERSION#v}"
+CILIUM_IMAGES=(
+  "quay.io/cilium/cilium:${CILIUM_IMG_TAG}"
+  "quay.io/cilium/operator-generic:${CILIUM_IMG_TAG}"
+  "quay.io/cilium/hubble-relay:${CILIUM_IMG_TAG}"
+)
+for img in "${CILIUM_IMAGES[@]}"; do
   sudo ctr -n k8s.io image pull "$img" --timeout 180s &
 done
 wait
 
-# 清理旧 pod 并安装
-sudo kubectl delete pods -n kube-flannel --all --ignore-not-found 2>/dev/null || true
-sudo kubectl apply -f /tmp/kube-flannel.yml
+# 安装 Helm（如未安装）
+if ! command -v helm &> /dev/null; then
+  log_info "安装 Helm..."
+  HELM_SCRIPT_URL="https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3"
+  for src in \
+    "https://ghproxy.net/$HELM_SCRIPT_URL" \
+    "https://ghproxy.com/$HELM_SCRIPT_URL" \
+    "https://mirror.ghproxy.com/$HELM_SCRIPT_URL" \
+    "$HELM_SCRIPT_URL"; do
+    if curl -fsSL --connect-timeout 10 --max-time 30 "$src" -o /tmp/get-helm-3.sh; then
+      log_ok "Helm 安装脚本已下载"
+      break
+    fi
+  done
+  if [ -s /tmp/get-helm-3.sh ]; then
+    bash /tmp/get-helm-3.sh
+    rm -f /tmp/get-helm-3.sh
+  else
+    log_warn "Helm 脚本下载失败，尝试 apt 安装..."
+    sudo apt-get install -y helm 2>/dev/null || true
+  fi
+  if command -v helm &> /dev/null; then
+    log_ok "Helm 已安装: $(helm version --short 2>/dev/null)"
+  else
+    log_err "Helm 安装失败，请手动安装后再执行 cilium install"
+    exit 1
+  fi
+fi
+
+# 通过 Helm 安装 Cilium
+log_info "通过 Helm 安装 Cilium..."
+helm repo add cilium https://helm.cilium.io/ 2>/dev/null || true
+helm repo update 2>/dev/null || true
+helm upgrade --install cilium cilium/cilium \
+  --namespace kube-system \
+  --set ipam.mode=cluster-pool \
+  --set clusterPoolIPv4PodCIDR="${POD_CIDR}" \
+  --set hubble.relay.enabled=true \
+  --set hubble.ui.enabled=true \
+  --set rollOutCiliumPods=true
+
+# 等待 Cilium 就绪
+log_info "等待 Cilium 就绪..."
+kubectl wait -n kube-system --for=condition=ready pod \
+  -l k8s-app=cilium --timeout=300s 2>/dev/null || true
+
+# 重启 coredns（Cilium CNI 就绪前调度的 pod 需要重新创建网络）
+log_info "重启 coredns 使其通过 Cilium CNI 重建网络..."
+sudo kubectl delete pods -n kube-system -l k8s-app=kube-dns --ignore-not-found 2>/dev/null || true
 
 echo ""
 echo "========================================"

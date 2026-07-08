@@ -12,6 +12,7 @@ log_err()   { echo -e "${RED}[ERR]${NC}   $*"; }
 K8S_VERSION="${1:-v1.36.2}"
 IMAGE_REPO="${2:-registry.cn-hangzhou.aliyuncs.com/google_containers}"
 PAUSE_VERSION="${3:-3.10}"
+CILIUM_VERSION="${4:-v1.16.5}"
 
 K8S_MINOR="$(echo "$K8S_VERSION" | grep -oP 'v\d+\.\d+')"
 
@@ -20,6 +21,7 @@ echo " Kubernetes Worker Node Setup"
 echo " Version: $K8S_VERSION ($K8S_MINOR)"
 echo " Image Repo: $IMAGE_REPO"
 echo " Pause: $PAUSE_VERSION"
+echo " Cilium: $CILIUM_VERSION"
 echo "========================================"
 
 # ─── Step 0: 清理已有节点 ─────────────────────────────
@@ -107,6 +109,21 @@ server = "https://ghcr.io"
   capabilities = ["pull", "resolve"]
 EOF
 
+# quay.io 镜像代理（Cilium 用，国内优先走 USTC/NJU 镜像）
+sudo mkdir -p /etc/containerd/certs.d/quay.io
+sudo tee /etc/containerd/certs.d/quay.io/hosts.toml > /dev/null <<EOF
+server = "https://quay.io"
+
+[host."https://quay.mirrors.ustc.edu.cn"]
+  capabilities = ["pull", "resolve"]
+
+[host."https://quay.nju.edu.cn"]
+  capabilities = ["pull", "resolve"]
+
+[host."https://quay.dockerproxy.com"]
+  capabilities = ["pull", "resolve"]
+EOF
+
 sudo systemctl restart containerd
 sudo systemctl enable containerd
 
@@ -173,28 +190,19 @@ log_info "[6/6] 启动 kubelet..."
 sudo systemctl enable --now kubelet 2>/dev/null || true
 log_ok "kubelet 已启动（等待 join 后才会正常运行）"
 
-# ─── 预拉取 Flannel 镜像 ──────────────────────────
-log_info "预拉取 Flannel 镜像（加速节点就绪）..."
-FLANNEL_URL="https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml"
-for src in \
-  "https://ghproxy.net/$FLANNEL_URL" \
-  "https://ghproxy.com/$FLANNEL_URL" \
-  "https://mirror.ghproxy.com/$FLANNEL_URL" \
-  "https://raw.gitmirror.com/flannel-io/flannel/master/Documentation/kube-flannel.yml" \
-  "$FLANNEL_URL"; do
-  if curl -fsSL --connect-timeout 10 --max-time 30 "$src" -o /tmp/kube-flannel.yml; then
-    log_ok "Flannel YAML 已下载"
-    break
-  fi
+# ─── 预拉取 Cilium 镜像（加速节点就绪）───────────────
+log_info "预拉取 Cilium 镜像..."
+CILIUM_IMG_TAG="${CILIUM_VERSION#v}"
+CILIUM_IMAGES=(
+  "quay.io/cilium/cilium:${CILIUM_IMG_TAG}"
+  "quay.io/cilium/operator-generic:${CILIUM_IMG_TAG}"
+  "quay.io/cilium/hubble-relay:${CILIUM_IMG_TAG}"
+)
+for img in "${CILIUM_IMAGES[@]}"; do
+  sudo ctr -n k8s.io image pull "$img" --timeout 180s &
 done
-
-if [ -s /tmp/kube-flannel.yml ]; then
-  for img in $(grep -oP '(?<=image: ).*' /tmp/kube-flannel.yml | sort -u); do
-    sudo ctr -n k8s.io image pull "$img" --timeout 180s &
-  done
-  wait
-  log_ok "Flannel 镜像已预拉取"
-fi
+wait
+log_ok "Cilium 镜像已预拉取"
 
 # ─── 完成 ─────────────────────────────────────────────
 echo ""

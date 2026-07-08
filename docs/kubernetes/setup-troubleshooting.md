@@ -161,6 +161,109 @@ if command -v kubeadm &> /dev/null; then
 fi
 ```
 
+## 13. 切换 CNI 时 Flannel 残留导致 Cilium 异常
+
+**现象:**
+- Cilium pod 反复重启，`cilium status` 报 `cilium-health daemon unreachable`
+- 新建 Pod 卡在 `ContainerCreating`，CNI 报 `Cilium API client timeout exceeded`
+- kubelet 日志报 `Error updating node status`，节点变为 `NotReady`
+
+**根因:** 从 Flannel 切换到 Cilium 时，Flannel 的虚拟接口、路由、iptables 规则未清理干净，导致 Cilium 无法正常工作。
+
+### 13a. flannel.1 VXLAN 接口占用端口 8472
+
+**现象:**
+```
+cilium status 反复报：
+  "failed to setup vxlan tunnel device: address already in use"
+```
+
+**原因:** `flannel.1` 接口仍在运行，占用了 VXLAN 端口 8472，Cilium 无法创建自己的 `cilium_vxlan` 隧道。
+
+**检查:**
+```bash
+ip -d link show type vxlan
+# 输出中 flannel.1 仍存在即有问题
+```
+
+**解决:**
+```bash
+sudo ip link delete flannel.1
+sudo ip link delete cilium_vxlan  # 如果卡在 DOWN 状态也删掉重建
+```
+
+### 13b. 路由表错误 — Pod CIDR 覆盖了节点子网
+
+**现象:**
+```
+ping 10.0.0.4 (API Server)
+From 10.0.1.121 icmp_seq=1 Time to live exceeded
+```
+
+**原因:** 路由表中 `10.0.0.0/24` 被指向 `cilium_host` 隧道接口（属于 Cilium Pod CIDR），但 API Server IP `10.0.0.4` 也在这个子网内。kubelet 发往 API Server 的流量被错误封装进 VXLAN 隧道，而非走物理网卡。
+
+**检查:**
+```bash
+ip route get 10.0.0.4
+# 正常应走 eth0, 错误时走 cilium_host
+```
+
+**解决:**
+```bash
+# 添加节点 IP 的直达路由，绕过隧道
+sudo ip route add <api-server-ip>/32 via <gateway> dev eth0
+# 例如:
+sudo ip route add 10.0.0.4/32 via 10.0.0.1 dev eth0  # vm-0-7 到 master
+sudo ip route add 10.0.0.7/32 via 10.0.0.1 dev eth0  # master 回 vm-0-7
+```
+
+**根本方案:** Cilium 的 Pod CIDR (`10.0.0.0/24`) 与节点子网 (`10.0.0.0/22`) 重叠导致路由冲突。应在安装 Cilium 时指定不与节点子网重叠的 Pod CIDR。
+
+### 13c. cni0 bridge 残留
+
+**现象:** `ip link show` 仍能看到 `cni0`（Flannel 创建的 bridge）
+
+**解决:**
+```bash
+sudo ip link delete cni0
+```
+
+### 13d. FLANNEL-FWD iptables 链残留
+
+**现象:** `sudo iptables -L FORWARD -n -v` 中仍有 `FLANNEL-FWD` 链引用
+
+**解决:**
+```bash
+sudo iptables -D FORWARD -j FLANNEL-FWD
+sudo iptables -X FLANNEL-FWD
+# 全量清理
+sudo iptables-save | grep -v flannel | sudo iptables-restore
+```
+
+### 13e. 节点 NotReady 但 kubelet 还在跑
+
+**现象:** `kubectl get nodes` 状态为 `NotReady`，`Conditions` 显示 `Kubelet stopped posting node status`
+
+**排查思路:**
+1. 检查 kubelet 是否在运行：`sudo systemctl status kubelet`
+2. 检查 kubelet 能否连到 API Server：
+   - `curl -k -v https://<api-server-ip>:6443`
+   - 如果卡住 → 路由问题（见 13b）
+   - 如果能通 → 检查 kubelet 日志 `sudo journalctl -u kubelet -n 50 --no-pager`
+3. ping 不通 API Server 时，用 tcpdump 抓包定位：
+   ```bash
+   sudo tcpdump -i eth0 -c 3 -n host <api-server-ip> and port 6443
+   ```
+
+### 13f. Cilium agent 卡在 Terminating 无法删除
+
+**现象:** 旧的 Cilium pod 状态为 `Terminating`，新的无法调度
+
+**解决:**
+```bash
+kubectl delete pod -n kube-system <cilium-pod> --force --grace-period=0
+```
+
 ## 快速参考
 
 | 问题 | 检查命令 |
@@ -171,3 +274,11 @@ fi
 | kubelet 日志 | `sudo journalctl -u kubelet --no-pager -n 50` |
 | pod 事件 | `sudo kubectl describe pod -n <ns> <pod>` |
 | 节点状态 | `sudo kubectl describe node <node>` |
+| VXLAN 接口冲突 | `ip -d link show type vxlan` |
+| CNI 残留接口 | `ip link show \| grep -E "flannel\|cni0\|cilium"` |
+| 路由是否异常 | `ip route get <api-server-ip>` |
+| Flannel iptables | `sudo iptables -L FORWARD -n \| grep FLANNEL` |
+| API Server 连通性 | `curl -k -v https://<api-server-ip>:6443` |
+| 抓包调试 | `sudo tcpdump -i eth0 -c 5 -n host <ip> and port 6443` |
+| Cilium agent 状态 | `kubectl exec -n kube-system <cilium-pod> -- cilium status` |
+| Cilium endpoint | `kubectl exec -n kube-system <cilium-pod> -- cilium endpoint list` |
