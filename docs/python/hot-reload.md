@@ -68,6 +68,10 @@ asyncio.run(main())
 
 修改 `handler.py` 保存后，所有 Task 下次循环输出新内容。
 
+> **不要用 `watch`**：`jurigged.watch()` 依赖 `sys.settrace`，这是进程级别的全局钩子，**所有 Python 字节码执行都会触发 trace 函数**，导致 CPU 密集场景慢 2-5 倍。即使只 watch 几个文件，trace 开销一样存在。
+>
+> 推荐做法：开发阶段用 `jurigged.reload()` 手动触发，或配合 `watchfiles` 按需 reload，**零运行时开销**。详见下文"手动热更新"。
+
 ## 监听多个文件 / 目录
 
 ```python
