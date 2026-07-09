@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hello-cilium
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-server
+  namespace: hello-cilium
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: echo-server
+  template:
+    metadata:
+      labels:
+        app: echo-server
+    spec:
+      containers:
+      - name: echo-server
+        image: registry.cn-hangzhou.aliyuncs.com/google_containers/echoserver:1.10
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-server
+  namespace: hello-cilium
+spec:
+  selector:
+    app: echo-server
+  ports:
+  - port: 80
+    targetPort: 8080
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: hello-gateway
+  namespace: hello-cilium
+spec:
+  gatewayClassName: cilium
+  listeners:
+  - name: http
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: Same
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: echo-route
+  namespace: hello-cilium
+spec:
+  parentRefs:
+  # 引用的是名为 hello-gateway 的 Gateway 资源，表示该 HTTPRoute 路由规则绑定到那个 Gateway 上。
+  - name: hello-gateway
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    # 引用的是 Kubernetes Service echo-server（端口 80），作为 Gateway HTTPRoute 规则的后端目标，匹配到路径 / 的流量会被转发到这个 Service。
+    - name: echo-server
+      port: 80
