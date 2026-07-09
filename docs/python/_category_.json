@@ -1,0 +1,9 @@
+{
+    "label": "Python",
+    "position": 3,
+    "link": {
+        "type": "generated-index",
+        "title": "Python 技术文档",
+        "description": "Python 相关技术笔记与使用经验。"
+    }
+}
