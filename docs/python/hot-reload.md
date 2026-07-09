@@ -88,6 +88,157 @@ jurigged.reload("handler.py")
 jurigged.reload("patch.py")
 ```
 
+## 手动热更新（不依赖 watch）
+
+如果不想用 `sys.settrace` 的开销，可以用 `watchfiles` 监听文件变化，手动触发 `importlib.reload` + 补齐字段：
+
+```python
+import gc
+import importlib
+import watchfiles
+
+REGISTRY = {}
+
+def register(cls, **fields):
+    REGISTRY[cls] = fields
+
+def patch_instances():
+    for cls, fields in REGISTRY.items():
+        for obj in gc.get_objects():
+            if isinstance(obj, cls):
+                for k, v in fields.items():
+                    if k not in obj.__dict__:
+                        obj.__dict__[k] = v
+
+def reload_module(path: str, root: str = "src"):
+    """手动重载模块并补齐实例字段
+
+    支持深层目录：src/services/user/handler.py → src.services.user.handler
+    """
+    # 去掉根路径前缀和 .py 后缀，转为模块名
+    rel = Path(path).relative_to(root)
+    mod_name = str(rel.with_suffix("")).replace("\\", "/").replace("/", ".")
+    mod = importlib.import_module(mod_name)
+    importlib.reload(mod)
+    patch_instances()
+    return mod
+
+def reload_external(mod_name: str):
+    """重载外部依赖库
+
+    例如：reload_external("requests.adapters")
+    """
+    # 先确保顶级包可重载
+    top = mod_name.split(".")[0]
+    importlib.invalidate_caches()
+    mod = importlib.import_module(mod_name)
+    importlib.reload(mod)
+    # 重新注入到已加载的父模块中
+    parts = mod_name.split(".")
+    for i in range(1, len(parts)):
+        parent = ".".join(parts[:i])
+        child = parts[i]
+        parent_mod = importlib.import_module(parent)
+        setattr(parent_mod, child, getattr(mod, child, None))
+    return mod
+
+# 在 asyncio 中监听文件变化
+import asyncio
+
+async def watch_and_reload(paths: list[str]):
+    async for changes in watchfiles.awatch(*paths):
+        for _, path in changes:
+            reload_module(path)
+```
+
+### 按需热更新（手动触发，无 watch）
+
+完全去掉文件监听，按需手动触发：
+
+```python
+import gc
+import importlib
+from pathlib import Path
+
+class Reloader:
+    def __init__(self):
+        self._snapshots: dict[str, float] = {}
+
+    def changed(self, path: str) -> bool:
+        mtime = Path(path).stat().st_mtime
+        if path not in self._snapshots:
+            self._snapshots[path] = mtime
+            return True
+        if mtime > self._snapshots[path]:
+            self._snapshots[path] = mtime
+            return True
+        return False
+
+    def reload_if_changed(self, path: str, root: str = "src"):
+        if self.changed(path):
+            rel = Path(path).relative_to(root)
+            mod_name = str(rel.with_suffix("")).replace("\\", "/").replace("/", ".")
+            mod = importlib.import_module(mod_name)
+            importlib.reload(mod)
+            patch_instances()
+            return mod
+        return None
+
+# 在代码中加个入口，按需调用
+if __name__ == "__main__":
+    r = Reloader()
+    input("按 Enter 热更新...")  # 阻塞等待
+    r.reload_if_changed("src/handler.py")
+```
+
+### 深层目录与外部库的限制
+
+| 问题 | 说明 |
+|------|------|
+| **深层目录** | `reload_module` 通过 `relative_to` 正确提取模块名，支持 `src/a/b/c.py` 变为 `a.b.c` |
+| **外部依赖库** | `reload_external("requests.adapters")` 可重载，但**依赖链不会自动传播**：如果 `requests.adapters` 引用了 `urllib3` 中的类，改 `urllib3` 不会影响 `requests.adapters` 中已导入的引用。需要手动触发链上所有模块 |
+| **`__init__.py` 中的引用** | 如果 `__init__.py` 做了 `from .sub import X`，重载子模块后父模块仍持有旧 `X`，需要 `reload_external` 重新 `setattr` |
+| **C 扩展模块** | `.pyd` / `.so` 不可重载 |
+| **循环依赖** | `importlib.reload` 对循环依赖处理不稳定，可能导致 `KeyError` |
+
+### 解决依赖链问题的通用方法
+
+```python
+import sys
+import importlib
+
+def reload_with_deps(mod_name: str, depth: int = 3):
+    """重载模块及其直接依赖模块（限定深度防循环）"""
+    seen = set()
+
+    def _reload(name: str, d: int):
+        if name in seen or d <= 0:
+            return
+        seen.add(name)
+        mod = sys.modules.get(name)
+        if mod is None:
+            return
+        # 找出该模块直接 import 的子模块
+        for child_name in dir(mod):
+            child = getattr(mod, child_name)
+            if hasattr(child, "__module__"):
+                _reload(child.__module__, d - 1)
+        importlib.reload(mod)
+
+    _reload(mod_name, depth)
+    patch_instances()
+```
+
+### 触发方式
+
+| 方式 | 实现 |
+|------|------|
+| 终端按 Enter | `input()` 阻塞等待 |
+| HTTP 端点 | Flask/FastAPI 加个 `/reload` 路由 |
+| 信号 | `signal.signal(signal.SIGUSR1, handler)` |
+| 快捷键 | `keyboard` 库监听热键 |
+| 定时检查 | asyncio loop 定时轮询文件 mtime（无 watch 库依赖） |
+
 ## 动态增加实例字段
 
 热更新框架只能替换函数代码，不能自动为已有实例补齐新增的字段。整合两种互补方案：**基类 `__getattr__` 兜底 + callback 统一补齐**。
