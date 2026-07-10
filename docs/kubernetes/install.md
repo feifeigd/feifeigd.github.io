@@ -99,3 +99,76 @@ sudo kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/down
 ### 脚本说明
 - `master-setup.sh`：初始化集群并配置 containerd
 - `worker-setup.sh`：预装必要组件等待集群加入
+
+## 构建镜像
+使用 containerd ，却不能使用 crictl 构建镜像。
+此时，不要安装docker，有冲突，处理比较麻烦。
+这要使用 nerdctl ， 安装：
+```shell
+cd /tmp
+# 如果刚才的包还在就用现成的，不在了重新下
+wget https://github.com/containerd/nerdctl/releases/download/v2.3.4/nerdctl-full-2.3.4-linux-amd64.tar.gz
+tar xzf nerdctl-full-2.3.4-linux-amd64.tar.gz
+
+# 只拷你要的，跳过 containerd 系列
+sudo cp bin/nerdctl /usr/local/bin/
+sudo cp bin/buildkitd bin/buildctl /usr/local/bin/
+
+# （可选）CNI 如果节点上 /opt/cni/bin 已经有了可以跳过
+sudo cp -r bin/cni /opt/cni/bin/ 2>/dev/null || true
+
+# buildkit 服务起起来
+sudo cp lib/systemd/system/buildkit.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now buildkit
+
+# 验证
+sudo nerdctl version
+
+# BuildKit 服务
+sudo rm -f /etc/systemd/system/buildkit.service
+
+sudo sh -c 'cat > /etc/systemd/system/buildkit.service <<EOF
+[Unit]
+Description=BuildKit daemon
+After=network.target containerd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/buildkitd --addr unix:///run/buildkit/buildkitd.sock --containerd-worker=true --containerd-worker-namespace=k8s.io  --oci-worker=false
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF'
+
+sudo systemctl daemon-reload
+sudo systemctl restart buildkit
+sudo systemctl status buildkit
+
+```
+
+测试 Dockerfile
+```shell
+mkdir -p ~/nerdctl-test && cd ~/nerdctl-test
+cat > Dockerfile <<'EOF'
+FROM alpine:3.20
+RUN apk add --no-cache curl
+WORKDIR /app
+COPY . .
+CMD ["echo", "hello from nerdctl build"]
+EOF
+
+sudo nerdctl build -t nerdctl-test:v1 .
+
+# 默认看 default namespace（nerdctl 自己的）
+sudo nerdctl images | grep nerdctl-test
+
+# 再看 K8s 侧（k8s.io namespace），此时还看不到，因为刚才没指定 -n
+sudo nerdctl -n k8s.io images | grep nerdctl-test
+
+# 跑一下确认镜像能起容器
+sudo nerdctl run --rm nerdctl-test:v1
+```
