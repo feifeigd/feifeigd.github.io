@@ -86,6 +86,28 @@ EOF'
 sudo kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 ```
 
+## ⚡ IPVS 模式
+
+本脚本默认将 kube-proxy 切换为 **IPVS 模式**，理由如下：
+
+| 对比项 | iptables 模式 | IPVS 模式 |
+|--------|--------------|-----------|
+| 数据结构 | 链式匹配（O(n)） | 哈希表（O(1)） |
+| 规则更新 | 全量替换，Service 增多时延迟明显 | 增量更新，几乎实时 |
+| 调度算法 | 仅 random | rr / wrr / lc / sh 等 10+ 种 |
+| 适用规模 | 数百 Service 以内 | 万级 Service 无压力 |
+
+IPVS 依赖 iptables 做 SNAT 和 NodePort 入口，两者**共存协作**，并非互斥。
+
+验证 IPVS 是否生效：
+```bash
+# 查看 kube-proxy 模式
+kubectl get configmap -n kube-system kube-proxy -o jsonpath='{.data.config\.conf}' | grep mode
+
+# 查看 IPVS 转发规则
+ipvsadm -Ln
+```
+
 ## 🛠️ 常见问题
 - **证书过期**：`sudo kubeadm alpha certs renew all`
 - **节点无法连接**：检查防火墙规则 `sudo ufw allow from <node-ip>`

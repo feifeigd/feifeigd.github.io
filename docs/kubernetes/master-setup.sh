@@ -45,9 +45,17 @@ log_info "[2/8] 加载内核模块..."
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf > /dev/null
 overlay
 br_netfilter
+ip_vs
+ip_vs_rr
+ip_vs_wrr
+ip_vs_sh
+nf_conntrack
 EOF
 sudo modprobe overlay || true
 sudo modprobe br_netfilter || true
+for mod in ip_vs ip_vs_rr ip_vs_wrr ip_vs_sh nf_conntrack; do
+  sudo modprobe "$mod" || true
+done
 
 log_info "[3/8] 设置 sysctl..."
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf > /dev/null
@@ -184,7 +192,7 @@ deb [${APT_OPTS}] https://mirrors.aliyun.com/kubernetes-new/core/stable/${K8S_MI
 EOF
 
 sudo apt-get update -y
-sudo apt-get install -y cri-tools netcat-openbsd
+sudo apt-get install -y cri-tools netcat-openbsd ipvsadm
 APT_K8S_VER="${K8S_VERSION#v}"
 if ! sudo apt-get install -y kubelet="${APT_K8S_VER}"* kubectl="${APT_K8S_VER}"* kubeadm="${APT_K8S_VER}"*; then
   log_warn "版本 $APT_K8S_VER 未找到，尝试安装最新版..."
@@ -251,6 +259,18 @@ if [ -n "${SUDO_USER:-}" ]; then
   sudo chown "$SUDO_USER:$SUDO_USER" "$ORIG_HOME/.kube/config"
   log_ok "kubectl 已配置 (用户 $SUDO_USER)"
 fi
+
+# ─── 切换 kube-proxy 为 IPVS 模式 ──────────────────────
+log_info "切换 kube-proxy 为 IPVS 模式..."
+kubectl get configmap -n kube-system kube-proxy -o jsonpath="{.data['config.conf']}" > /tmp/kube-proxy.conf
+sed -i 's/mode: ""/mode: "ipvs"/' /tmp/kube-proxy.conf
+kubectl get configmap -n kube-system kube-proxy -o jsonpath="{.data['kubeconfig.conf']}" > /tmp/kubeconfig.conf
+kubectl create configmap -n kube-system kube-proxy \
+  --from-file=config.conf=/tmp/kube-proxy.conf \
+  --from-file=kubeconfig.conf=/tmp/kubeconfig.conf \
+  --dry-run=client -o yaml | kubectl apply -f -
+kubectl rollout restart -n kube-system daemonset kube-proxy
+log_ok "kube-proxy 已切换为 IPVS 模式"
 
 # ─── 清理网络插件残留 ─────────────────────────────────
 log_info "清理已有网络插件残留（Flannel 等）..."
@@ -326,14 +346,13 @@ helm repo add cilium https://helm.cilium.io/ 2>/dev/null || true
 helm repo update 2>/dev/null || true
 helm upgrade --install cilium cilium/cilium \
   --namespace kube-system \
-  --reuse-values \
   --set ipam.mode=cluster-pool \
   --set clusterPoolIPv4PodCIDR="${POD_CIDR}" \
   --set hubble.relay.enabled=true \
   --set hubble.ui.enabled=true \
   --set rollOutCiliumPods=true \
   --set gatewayAPI.enabled=true \
-  --set kubeProxyReplacement=true
+  --set kubeProxyReplacement=false
 
 # 等待 Cilium 就绪
 log_info "等待 Cilium 就绪..."
