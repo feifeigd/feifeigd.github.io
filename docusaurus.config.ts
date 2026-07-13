@@ -75,6 +75,11 @@ const config: Config = {
           label: '技术文档',
         },
         {
+          to: '/ai',
+          label: 'AI专题',
+          position: 'left',
+        },
+        {
           to: '/blog',
           label: '博客',
           position: 'left',
