@@ -1,0 +1,12 @@
+ {
+      "acp.agents": {
+        "Hermes Agent (WSL)": {
+          "command": "wsl",
+          "args": [
+            "-d", "ubuntu-24.04", 
+            "hermes", "acp"
+          ]
+        }
+      }
+    }
+    
