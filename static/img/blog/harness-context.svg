@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" fill="none" stroke="none">
+  <defs>
+    <linearGradient id="lc" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient>
+    <linearGradient id="lw" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+    <linearGradient id="lh" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#94a3b8"/><stop offset="100%" stop-color="#64748b"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.1"/></filter>
+  </defs>
+  <rect x="0" y="0" width="500" height="280" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="250" y="30" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#1e293b">分层上下文结构</text>
+  <rect x="30" y="55" width="440" height="200" rx="14" fill="url(#lh)" opacity="0.12" filter="url(#sh)"/>
+  <rect x="30" y="55" width="440" height="200" rx="14" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="50" y="78" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#64748b">历史层 — 已完成任务摘要（定期压缩）</text>
+  <rect x="90" y="95" width="320" height="120" rx="12" fill="url(#lw)" opacity="0.15" filter="url(#sh)"/>
+  <rect x="90" y="95" width="320" height="120" rx="12" fill="none" stroke="#3b82f6" stroke-width="2"/>
+  <text x="110" y="118" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#2563eb">工作层 — 当前任务信息（按需加载/卸载）</text>
+  <rect x="175" y="145" width="130" height="55" rx="10" fill="url(#lc)" filter="url(#sh)"/>
+  <text x="240" y="170" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="white">核心层</text>
+  <text x="240" y="187" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#c7d2fe">System Prompt · 关键约束</text>
+</svg>

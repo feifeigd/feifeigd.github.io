@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 320" fill="none" stroke="none">
+  <defs>
+    <linearGradient id="gw" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient>
+    <linearGradient id="gr" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+    <linearGradient id="gs" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+    <linearGradient id="gf" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.15"/></filter>
+  </defs>
+  <rect x="0" y="0" width="500" height="320" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="250" y="30" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#1e293b">自我验证循环</text>
+  <rect x="175" y="50" width="150" height="50" rx="25" fill="url(#gw)" filter="url(#sh)"/>
+  <text x="250" y="76" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" font-weight="700" fill="white">✏️ 写</text>
+  <text x="250" y="93" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#c7d2fe">生成代码</text>
+  <line x1="250" y1="100" x2="250" y2="128" stroke="#6366f1" stroke-width="2"/>
+  <polygon points="250,132 244,124 256,124" fill="#6366f1"/>
+  <rect x="340" y="135" width="150" height="50" rx="25" fill="url(#gr)" filter="url(#sh)"/>
+  <text x="415" y="161" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" font-weight="700" fill="white">▶️ 跑</text>
+  <text x="415" y="178" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#d1fae5">执行 &amp; 验证</text>
+  <line x1="315" y1="170" x2="283" y2="185" stroke="#10b981" stroke-width="2"/>
+  <polygon points="278,188 284,178 290,185" fill="#10b981"/>
+  <rect x="175" y="220" width="150" height="50" rx="25" fill="url(#gs)" filter="url(#sh)"/>
+  <text x="250" y="246" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" font-weight="700" fill="white">👁️ 看</text>
+  <text x="250" y="263" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#fef3c7">检查结果</text>
+  <line x1="220" y1="220" x2="185" y2="188" stroke="#f59e0b" stroke-width="2"/>
+  <polygon points="180,185 194,185 188,195" fill="#f59e0b"/>
+  <rect x="10" y="135" width="150" height="50" rx="25" fill="url(#gf)" filter="url(#sh)"/>
+  <text x="85" y="161" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" font-weight="700" fill="white">🔧 修</text>
+  <text x="85" y="178" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#fecaca">修复 Bug</text>
+  <line x1="160" y1="150" x2="175" y2="100" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="177,95 168,102 180,100" fill="#ef4444"/>
+</svg>
