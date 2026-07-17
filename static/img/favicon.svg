@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2e8555"/>
+      <stop offset="100%" stop-color="#25c2a0"/>
+    </linearGradient>
+  </defs>
+  <path d="M200 20 L355 98 L355 302 L200 380 L45 302 L45 98 Z" fill="url(#bg)"/>
+  <path d="M200 48 L328 112 L328 288 L200 352 L72 288 L72 112 Z" fill="none" stroke="white" stroke-width="2" stroke-opacity="0.2"/>
+  <polyline points="120,180 150,210 120,240" fill="none" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <path d="M170 150 Q160 160 160 175 Q160 190 155 200 Q160 210 160 225 Q160 240 170 250" fill="none" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M230 150 Q240 160 240 175 Q240 190 245 200 Q240 210 240 225 Q240 240 230 250" fill="none" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="188" y1="148" x2="212" y2="252" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.35"/>
+  <text x="200" y="325" text-anchor="middle" font-family="'Courier New', 'Consolas', 'Menlo', monospace" font-size="46" font-weight="bold" fill="white" letter-spacing="6">d7kj</text>
+</svg>
