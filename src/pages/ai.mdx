@@ -3,17 +3,97 @@ title: "AI专题"
 description: "人工智能相关文章与笔记"
 ---
 
+{/* 本文件由 scripts/gen-ai-topic.mjs 自动生成，请勿手工编辑。收录规则：blog/ 下带 "ai" 标签的文章，按日期倒序。 */}
+
 # AI专题
 
 人工智能相关文章与笔记。
 
+## AI 知识体系
+
+```mermaid
+mindmap
+  root((AI 知识体系))
+    基础理论
+      机器学习
+        监督学习
+        无监督学习
+        强化学习
+      深度学习
+        CNN
+        RNN
+        GAN
+      自然语言处理 NLP
+        分词与向量化
+        语义理解
+        文本生成
+    大语言模型 LLM
+      核心架构
+        Transformer
+        Attention 机制
+        Positional Encoding
+      代表模型
+        GPT 系列
+        Claude 系列
+        DeepSeek
+        LLaMA 开源系列
+      训练方法
+        预训练 Pre-training
+        微调 Fine-tuning
+        RLHF / DPO
+        LoRA / QLoRA
+    AI 应用层
+      RAG 检索增强生成
+        向量数据库
+        Embedding 模型
+        检索策略
+      AI Agent
+        工具调用
+        记忆系统
+        多智能体协作
+      Function Calling
+        角色与字段
+        报文处理
+        工具编排
+    AI 基础设施
+      推理优化
+        vLLM
+        PagedAttention
+        Continuous Batching
+        量化推理
+      训练框架
+        分布式训练
+        混合精度
+        显存优化
+      AI Infra 全景
+        GPU 集群
+        模型服务
+        监控与调度
+    AI 协议与标准
+      MCP 模型上下文协议
+        传输层设计
+        工具编排
+        资源管理
+      A2A 协议
+      OpenAI API 规范
+    AI 开发工具
+      LangChain
+      LlamaIndex
+      Hermes Agent
+      Dify / Coze
+```
+
 ## 最新文章
 
+- [vLLM 架构详解：PagedAttention、Continuous Batching 与生产级推理优化](/blog/2026/07/26/vllm-architecture-deep-dive)
+- [MCP 协议深度解析：架构设计、传输层与工具编排最佳实践](/blog/2026/07/26/mcp-protocol-deep-dive)
+- [AI 更擅长写 React 还是 Vue？被榜单掩盖的真相](/blog/2026/07/24/ai-react-vs-vue)
 - [Function Calling 实践指南：角色、字段与报文处理全解析](/blog/2026/07/23/function-calling-implementation-guide)
 - [扩展 LLM 的能力边界：联网搜索、文件读写与记忆功能全景指南](/blog/2026/07/23/extending-llm-capabilities)
 - [一文讲透如何构建 Harness——六大组件全解析](/blog/2026/07/16/harness-six-components)
-- [GB200 NVL72 成本拆解 — 一台300万美元的AI机柜钱花在哪](/blog/2026/07/14/gb200-nvl72-cost-breakdown)
+- [Windows VSCode 调用 WSL 中的 Hermes Agent 实战](/blog/2026/07/15/vscode-wsl-hermes)
+- [HyperFrames 视频脚本：GB200 NVL72 — 一台 300 万美元的 AI 机柜，钱到底花在哪？](/blog/2026/07/14/gb200-nvl72-cost-breakdown)
 - [Function Calling 诞生的背景：LLM 为什么要学会调用函数](/blog/2026/07/14/function-calling-background)
 - [DeepSeek开源的价值](/blog/2026/07/13/deepseek-open-source-value)
 - [AI Infra 到底是什么](/blog/2026/07/07/ai-infra-what-is-it)
-- [RAG with LangChain + Qdrant](/blog/2026/07/03/rag-with-langchain-qdrant)
+- [用 LangChain + Qdrant + DeepSeek 搭建简历 RAG 系统](/blog/2026/07/03/rag-with-langchain-qdrant)

@@ -8,6 +8,11 @@
   "license": "MIT",
   "scripts": {
     "docusaurus": "docusaurus start",
+    "gen:ai-topic": "node scripts/gen-ai-topic.mjs",
+    "predev": "node scripts/gen-ai-topic.mjs",
+    "prestart": "node scripts/gen-ai-topic.mjs",
+    "prebuild": "node scripts/gen-ai-topic.mjs",
+    "dev": "docusaurus start",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
