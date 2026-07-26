@@ -1,3 +1,12 @@
+---
+title: "用 LangChain + Qdrant + DeepSeek 搭建简历 RAG 系统"
+date: 2026-07-03T20:00:00+08:00
+draft: false
+tags: ["ai", "rag", "langchain", "qdrant", "deepseek", "llm"]
+categories: ["Tech"]
+description: "用 LangChain + Qdrant + DeepSeek 搭建简历 RAG 系统，从 Word 简历中提取结构化信息"
+---
+
 # 用 LangChain + Qdrant + DeepSeek 搭建简历 RAG 系统
 
 ## 背景

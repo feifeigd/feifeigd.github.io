@@ -21,7 +21,7 @@ description: "深入剖析 vLLM 的核心技术——PagedAttention 与 Continuo
 
 vLLM 凭借 PagedAttention 和 Continuous Batching 两项核心技术，在上述三个维度都实现了数量级的提升。
 
-<!-- truncate -->
+{/* truncate */}
 
 ## 一、PagedAttention：操作系统的虚拟内存，用在 Transformer 上
 

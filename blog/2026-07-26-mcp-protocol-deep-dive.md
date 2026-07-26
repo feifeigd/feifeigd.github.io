@@ -17,7 +17,7 @@ Function Calling 解决了「LLM 如何调用外部函数」的问题，但它�
 
 **MCP（Model Context Protocol）** 就是来解决这个问题的。它由 Anthropic 提出，本质上是一个**通用的、模型无关的上下文与工具交互协议**，定义了 LLM 应用与外部工具/数据源之间的标准通信方式。
 
-<!-- truncate -->
+{/* truncate */}
 
 ## MCP 的架构设计
 
