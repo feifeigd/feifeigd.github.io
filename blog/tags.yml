@@ -98,3 +98,18 @@ implementation:
   label: Implementation
   permalink: /implementation
   description: 实现指南
+
+reasoning:
+  label: Reasoning
+  permalink: /reasoning
+  description: AI 推理与规划
+
+storage:
+  label: Storage
+  permalink: /storage
+  description: 存储系统
+
+performance:
+  label: Performance
+  permalink: /performance
+  description: 性能优化
