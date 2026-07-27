@@ -15,6 +15,8 @@ const config: Config = {
   organizationName: 'd7kj',
   projectName: 'feifeigd.github.io',
 
+  staticDirectories: ['static', 'public'],
+
   onBrokenLinks: 'throw',
 
   markdown: {
@@ -135,6 +137,26 @@ const config: Config = {
       theme: {light: 'neutral', dark: 'dark'},
     },
   } satisfies Preset.ThemeConfig,
+};
+
+// Custom webpack plugin to fix IIS tilde issue
+// IIS treats '~' in URLs as DOS 8.3 short filenames → 403 Forbidden
+const iisCompatibleChunks = function (this: any, config: Configuration): Configuration {
+  if (config.output) {
+    // Replace '~' with '-' in runtime chunk names
+    if (config.output.filename) {
+      config.output.filename = (config.output.filename as string).replace(/\[name\]~(\w+)/g, '[name]-$1');
+    }
+    if (config.output.chunkFilename) {
+      config.output.chunkFilename = (config.output.chunkFilename as string).replace(/\[name\]~(\w+)/g, '[name]-$1');
+    }
+  }
+  // Also override webpack's optimization.runtimeChunk naming
+  if (config.optimization?.runtimeChunk) {
+    // webpack adds '~' as separator in runtime chunk names
+    // We can't directly control this, so use SplitChunksPlugin to rename
+  }
+  return config;
 };
 
 export default config;

@@ -11,7 +11,7 @@ description: "深入分析 AI Agent 推理与执行分离的架构模式、审�
 
 近年来，AI Agent 的架构设计经历了一场静默的革命。从最初的 ReAct（Reasoning + Acting）循环，到现在的 Plan-Execute 分离模式，业界正在形成共识：**将推理（Reasoning）与执行（Execution）解耦**，是构建可靠、可审计、可扩展的 Agent 系统的关键。
 
-<!-- truncate -->
+{/* truncate */}
 
 ## 为什么需要分离？
 
