@@ -362,8 +362,8 @@ def prepare_reasoning_training_data(trajectories):
 
 ## 相关阅读
 
-- [大模型推理中的存储 I/O 瓶颈与分布式缓存优化实战](/blog/2026-07-27-llm-inference-storage-io-optimization)
-- [vLLM 架构详解：PagedAttention 与高效推理引擎的设计哲学](/blog/2026-07-26-vllm-architecture-pagedattention)
+- [大模型推理中的存储 I/O 瓶颈与分布式缓存优化实战](/blog/2026/07/27/llm-inference-storage-io-optimization)
+- [vLLM 架构详解：PagedAttention 与高效推理引擎的设计哲学](/blog/2026/07/26/vllm-architecture-deep-dive)
 
 ---
 

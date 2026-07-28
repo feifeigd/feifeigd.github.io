@@ -338,8 +338,8 @@ ToolGuardian 这类基于形式化方法的工具目前主要做调用前验证�
 
 ## 相关阅读
 
-- [AI Agent 推理与执行分离架构深度解析](/blog/2026-07-27-agent-reasoning-execution-separation)
-- [MCP 协议深度解析：AI Agent 工具调用的标准化之路](/blog/2026-07-26-mcp-protocol-deep-dive)
+- [AI Agent 推理与执行分离架构深度解析](/blog/2026/07/27/agent-reasoning-execution-separation)
+- [MCP 协议深度解析：AI Agent 工具调用的标准化之路](/blog/2026/07/26/mcp-protocol-deep-dive)
 
 ---
 
