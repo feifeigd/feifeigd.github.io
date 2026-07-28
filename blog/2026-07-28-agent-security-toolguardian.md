@@ -9,8 +9,6 @@ description: "深入分析 AI Agent 调用外部工具时的安全风险与防�
 
 # AI Agent 安全架构深度剖析：从 ToolGuardian 到 Agent-Tool 交互防护
 
-<!-- truncate -->
-
 ## 引言
 
 2026 年 7 月，OpenAI 的 Hugging Face 账号被入侵事件再次将 AI 安全推上风口浪尖。这场风波不仅暴露了 API 密钥管理的脆弱性，更引发了一个更深层的讨论：**当 AI Agent 被授权调用外部工具时，我们如何在功能与安全之间找到平衡？**
