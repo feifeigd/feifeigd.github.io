@@ -113,3 +113,8 @@ performance:
   label: Performance
   permalink: /performance
   description: 性能优化
+
+security:
+  label: Security
+  permalink: /security
+  description: AI 安全相关
