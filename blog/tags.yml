@@ -119,7 +119,3 @@ security:
   permalink: /security
   description: AI 安全相关
 
-kubernetes:
-  label: Kubernetes
-  permalink: /kubernetes
-  description: Kubernetes 容器编排与实践

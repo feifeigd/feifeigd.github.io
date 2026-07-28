@@ -1,17 +1,6 @@
----
-title: "Kubernetes 污点与容忍：避免普通 Pod 占用 GPU 节点"
-date: 2026-07-28T10:00:00+08:00
-draft: false
-tags: ["kubernetes", "gpu", "infra"]
-categories: ["Tech"]
-description: "给 GPU 节点打污点，让只有声明容忍的 Pod 才能调度上去 —— 别让 CPU Pod 白占你昂贵的 A100。"
----
-
 # Kubernetes 污点与容忍：避免普通 Pod 占用 GPU 节点
 
 > GPU 节点很贵，别让跑 CPU 的 Pod 占了位置。
-
-<!-- truncate -->
 
 ## 背景：为什么需要这个？
 
