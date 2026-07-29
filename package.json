@@ -14,7 +14,7 @@
     "prebuild": "node scripts/gen-ai-topic.mjs",
     "dev": "docusaurus start",
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build": "docusaurus build && node scripts/fix-iis-chunks.mjs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",

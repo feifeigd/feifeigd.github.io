@@ -10,7 +10,7 @@ const config: Config = {
     v4: true,
   },
 
-  url: 'https://feifeigd.github.io',
+  url: 'https://www.d7kj.com',
   baseUrl: '/',
   organizationName: 'd7kj',
   projectName: 'feifeigd.github.io',
