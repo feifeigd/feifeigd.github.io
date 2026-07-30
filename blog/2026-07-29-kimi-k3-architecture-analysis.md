@@ -39,16 +39,16 @@ LatentMoE 的核心思想是：**通过低维瓶颈（latent bottleneck）对 ex
 
 ### 数学描述
 
-设输入为 $x \in \mathbb{R}^d$，传统的 MoE FFN 计算为：
+设输入为 x ∈ ℝᵈ，传统的 MoE FFN 计算为：
 
-$$y = \sum_{i} g_i(x) \cdot \text{FFN}_i(x)$$
+$y = Σᵢ gᵢ(x) · FFNᵢ(x)$
 
-其中 $\text{FFN}_i(x) = W_{up}^{(i)} \cdot \sigma(W_{gate}^{(i)} \cdot x) \odot (W_{down}^{(i)} \cdot x)$（若使用 SwiGLU）。
+其中 FFNᵢ(x) = W_up⁽ⁱ⁾ · σ(W_gate⁽ⁱ⁾ · x) ⊙ (W_down⁽ⁱ⁾ · x)（若使用 SwiGLU）。
 
 LatentMoE 在两处引入压缩：
 
-1. **共享 down-projector**：将所有 expert 的 gate/up 投影共享一个参数量远小于 $d$ 的潜在空间 $z \in \mathbb{R}^{d'}$（$d' ≪ d$）；
-2. **专家特定的轻量调节器**：每个 expert 只需学习一个从 $d'$ 到 $d$ 的窄适配器，而非完整的 $d \rightarrow 4d$ 投影。
+1. **共享 down-projector**：将所有 expert 的 gate/up 投影共享一个参数量远小于 d 的潜在空间 z ∈ ℝᵈᐟ（$d' ≪ d$）；
+2. **专家特定的轻量调节器**：每个 expert 只需学习一个从 d' 到 d 的窄适配器，而非完整的 d → 4d 投影。
 
 这种设计本质上与 **Nemotron 3 Ultra** 的压缩 MoE 思路一致，但 Kimi-K3 将其扩展到了 2.8T 的规模。据技术报告所述，LatentMoE 相比标准 MoE 在同等总参数量下减少了约 **37%** 的 expert 参数存储需求。
 
@@ -62,24 +62,24 @@ Kimi-K3 的第二大创新是其使用的注意力机制——**Kimi Delta Atten
 
 ### 从 Softmax 到 DeltaNet
 
-标准 Softmax 注意力的计算复杂度为 $O(L^2)$，这是长上下文推理的主要瓶颈。DeltaNet 系列通过将注意力视为线性递归过程来突破二次复杂度。
+标准 Softmax 注意力的计算复杂度为 O(L²)，这是长上下文推理的主要瓶颈。DeltaNet 系列通过将注意力视为线性递归过程来突破二次复杂度。
 
 最简单的线性注意力更新为：
 
-$$S_t = S_{t-1} + v_t \otimes k_t$$
+$Sₜ = Sₜ₋₁ + vₜ ⊗ kₜ$
 
-其中 $S_t$ 是时刻 $t$ 的状态矩阵，$v_t$ 是 value，$k_t$ 是 key。这相当于在状态空间中累积记忆，但缺乏"遗忘"能力——所有历史信息被无差别累积。
+其中 Sₜ 是时刻 $t$ 的状态矩阵，vₜ 是 value，kₜ 是 key。这相当于在状态空间中累积记忆，但缺乏"遗忘"能力——所有历史信息被无差别累积。
 
 ### KDA 的关键改进
 
 KDA 引入了两个可学习的逐维度参数来控制状态的更新：
 
-$$\tilde{S}_t = S_{t-1} \cdot \text{Diag}(\alpha_t)$$
-$$S_t = \tilde{S}_t + e_t \otimes k_t$$
+$S̃ₜ = Sₜ₋₁ · Diag(αₜ)$
+$Sₜ = S̃ₜ + eₜ ⊗ kₜ$
 
 其中：
-- $\alpha_t \in \mathbb{R}^d$ 是**可学习的逐维度衰减因子**，控制每个 hidden dimension 的历史信息保留比例
-- $e_t = \beta_t \odot (v_t - \hat{v}_t)$ 是**误差校正项**，$\beta_t$ 控制更新的置信度，$\hat{v}_t$ 是基于当前状态的预测值
+- αₜ ∈ ℝᵈ 是**可学习的逐维度衰减因子**，控制每个 hidden dimension 的历史信息保留比例
+- eₜ = βₜ ⊙ (vₜ − v̂ₜ) 是**误差校正项**，βₜ 控制更新的置信度，v̂ₜ 是基于当前状态的预测值
 
 这个设计的美妙之处在于：**α 和 β 都是基于输入上下文动态生成的**（通过一个小的 learned projection），而非固定的超参数。这意味着模型可以在不同位置、不同上下文中自适应地调整记忆的衰减率和更新强度。
 
@@ -96,7 +96,7 @@ Kimi-K3 是目前**第一个在前沿级模型中完全弃用位置编码**（No
 NoPE 可工作依赖于两个前提：
 
 1. **Causal masking 天然提供位置信息**：在自回归语言模型中，因果掩码强制每个 token 只能看到其之前的 token，这种偏序关系本身就编码了 token 的绝对位置（第 5 个 token 只能看到前 4 个）。
-2. **线性注意力（KDA）的状态累积隐式编码时序**：KDA 的递归状态更新过程 $S_t = S_{t-1} \cdot \text{Diag}(\alpha_t) + \dots$ 天然是一个时序过程，不同时间步的状态天然不同。
+2. **线性注意力（KDA）的状态累积隐式编码时序**：KDA 的递归状态更新过程 Sₜ = Sₜ₋₁ · Diag(αₜ) + … 天然是一个时序过程，不同时间步的状态天然不同。
 
 此前，也有研究表明无位置编码的模型在中等长度序列上可以表现良好（如 ["No Positional Encodings in Transformer"](https://arxiv.org/abs/2205.14366)），但 Kimi-K3 首次在 2.8T 规模的模型上验证了这一点。
 
@@ -117,7 +117,7 @@ Kimi-K3 引入了 **Attention Residuals**——一种跨层残差连接机制，
 
 ### 动机
 
-标准 Transformer 使用加法残差连接：$x_{l+1} = x_l + \text{FFN}(\text{Attn}(x_l))$。信息从第 $l$ 层到第 $l+n$ 层需要经过 $n$ 次非线性变换和 $n$ 次残差加和，理论上可以视为一条"信息高速公路"，但实践中高层往往难以精确利用低层特征。
+标准 Transformer 使用加法残差连接：xₗ₊₁ = xₗ + FFN(Attn(xₗ))。信息从第 $l$ 层到第 $l+n$ 层需要经过 $n$ 次非线性变换和 $n$ 次残差加和，理论上可以视为一条"信息高速公路"，但实践中高层往往难以精确利用低层特征。
 
 ### Attention Residuals 的机制
 
@@ -125,9 +125,9 @@ Attention Residuals 的核心思想是：**使用一个可学习的注意力门�
 
 具体而言，在第 $l$ 层，模型计算：
 
-$$r_{l} = \sum_{j < l} \text{softmax}(w_{l,j}) \cdot \phi(x_j)$$
+$rₗ = Σⱼ₍ₗ softmax(wₗ,ⱼ) · φ(xⱼ)$
 
-其中 $w_{l,j}$ 是层 $l$ 对层 $j$ 的**可学习注意力权重**（标量，所有 token 共享），$\phi$ 是一个线性投影（可选）。然后将 $r_l$ 加到当前层的输出上。
+其中 wₗ,ⱼ 是层 $l$ 对层 $j$ 的**可学习注意力权重**（标量，所有 token 共享），φ 是一个线性投影（可选）。然后将 $r_l$ 加到当前层的输出上。
 
 MoonshotAI 报告称，这一设计带来约 4% 的训练额外开销和约 2% 的推理开销，但同等的计算预算下，Attention Residuals 的 perplexity 比标准残差连接低约 **0.8 个点**，这是一个相当显著的增益。
 
