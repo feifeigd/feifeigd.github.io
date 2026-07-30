@@ -157,9 +157,9 @@ HotPin 的作者在 HN 上分享了自己发现这项技术的过程：他的本
 
 ## 相关阅读
 
-- [vLLM 架构深度解析：从 PagedAttention 到生产级推理引擎](/blog/2026-07-26-vllm-architecture-deep-dive)
-- [大模型推理中的存储 I/O 瓶颈与分布式缓存优化实战](/blog/2026-07-27-llm-inference-storage-io-optimization)
-- [推理模型的计算效率革命：Early Stopping 与自适应推理时延优化](/blog/2026-07-28-reasoning-model-early-stopping)
+- [vLLM 架构深度解析：从 PagedAttention 到生产级推理引擎](/blog/2026/07/26/vllm-architecture-deep-dive)
+- [大模型推理中的存储 I/O 瓶颈与分布式缓存优化实战](/blog/2026/07/27/llm-inference-storage-io-optimization)
+- [推理模型的计算效率革命：Early Stopping 与自适应推理时延优化](/blog/2026/07/28/reasoning-model-early-stopping)
 
 ---
 
