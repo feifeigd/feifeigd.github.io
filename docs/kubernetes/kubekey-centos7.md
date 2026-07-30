@@ -16,6 +16,7 @@
 | etcd | v3.6.5 |
 | CoreDNS | v1.12.1 |
 | Helm | v3.18.5 |
+| Kruise | v1.8.0（含 OKG v1.1.0） |
 
 ### 为什么需要关注内核版本？
 
@@ -433,21 +434,30 @@ sudo ctr version
 
 ---
 
-## 8. 后续：安装 OpenKruiseGame
+## 8. 后续：安装 OpenKruiseGame + Kruise
 
-集群就绪后，安装 **OpenKruiseGame**（游戏服管理套件）：
+集群就绪后，安装 **OpenKruiseGame（OKG）**（游戏服管理套件，v1.1.0）及其底层依赖 **OpenKruise**（v1.8.0）。
 
 ```bash
-# 添加仓库
+# ── 1. 安装 OpenKruise（底层工作负载扩展） ──
+helm repo add openkruise https://openkruise.github.io/charts/
+helm repo update
+helm install kruise openkruise/kruise --version 1.8.0 \
+  --namespace kruise-system --create-namespace
+
+# ── 2. 安装 OpenKruiseGame ──
 helm repo add openkruisegame https://openkruise.github.io/openkruisegame/
+helm repo update
+helm install kruise-game openkruisegame/kruise-game --version 1.1.0 \
+  --namespace kruise-game-system --create-namespace
 
-# 安装 OpenKruiseGame
-helm install kruise-game openkruisegame/kruise-game --version 0.22.0
-
-# 验证
-kubectl get pods -n kruise-game
-kubectl get crd | grep game
+# ── 3. 验证 ──
+kubectl get pods -n kruise-system
+kubectl get pods -n kruise-game-system
+kubectl get crd | grep -E 'kruise|game'
 ```
+
+> 详细配置（GameServerSet 部署、热更新、网络模式等）见 [OpenKruiseGame 安装与配置指南](./openkruise-game.md)。
 
 ---
 
