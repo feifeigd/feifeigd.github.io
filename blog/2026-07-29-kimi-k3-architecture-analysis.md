@@ -47,7 +47,7 @@ $$y = \sum_{i} g_i(x) \cdot \text{FFN}_i(x)$$
 
 LatentMoE 在两处引入压缩：
 
-1. **共享 down-projector**：将所有 expert 的 gate/up 投影共享一个参数量远小于 $d$ 的潜在空间 $z \in \mathbb{R}^{d'}$（$d' \ll d$）；
+1. **共享 down-projector**：将所有 expert 的 gate/up 投影共享一个参数量远小于 $d$ 的潜在空间 $z \in \mathbb{R}^{d'}$（$d' ≪ d$）；
 2. **专家特定的轻量调节器**：每个 expert 只需学习一个从 $d'$ 到 $d$ 的窄适配器，而非完整的 $d \rightarrow 4d$ 投影。
 
 这种设计本质上与 **Nemotron 3 Ultra** 的压缩 MoE 思路一致，但 Kimi-K3 将其扩展到了 2.8T 的规模。据技术报告所述，LatentMoE 相比标准 MoE 在同等总参数量下减少了约 **37%** 的 expert 参数存储需求。
