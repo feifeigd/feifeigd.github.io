@@ -15,7 +15,7 @@ description: "深入分析 HotPin 如何用 50 行 C++ 代码实现 120B MoE 模
 
 本文将从工程实现的角度，拆解 HotPin 的核心原理、边界条件与适用场景。
 
-<!-- truncate -->
+{/* truncate */}
 
 ## 一、MoE 推理的内存墙
 

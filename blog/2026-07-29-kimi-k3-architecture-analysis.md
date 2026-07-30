@@ -13,7 +13,7 @@ description: "深入分析 MoonshotAI 开源的 2.8T 参数 MoE 模型 Kimi-K3 �
 
 本文将从工程实现的角度，逐层拆解 Kimi-K3 的四大核心架构创新：**LatentMoE**、**Kimi Delta Attention**、**NoPE** 以及 **Attention Residuals**，并在关键设计点上与 DeepSeek V4、Llama 4 等同期模型进行对比分析。
 
-<!-- truncate -->
+{/* truncate */}
 
 ## 一、规模概览：2.8T 的构成逻辑
 
