@@ -10,8 +10,8 @@
 |------|-----|
 | OS | CentOS 7.9 （kernel 3.10.0-xxx） |
 | KubeKey | v4.0.5 |
-| K8s | v1.34.x（**需升级内核**） / v1.27.x（兼容原内核） |
-| CRI | containerd |
+| K8s | v1.34.x（**需升级内核**） / v1.31.x（原内核 3.10 最省心） / v1.34.x + 钉住 containerd 1.7（原内核稳妥） |
+| CRI | containerd（v1.7.x 支持 3.10 / v2.x 要求内核 >= 4.x） |
 | CNI | Calico v3.31 |
 | etcd | v3.6.5 |
 | CoreDNS | v1.12.1 |
