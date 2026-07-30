@@ -530,6 +530,46 @@ sudo journalctl -u kubelet -f --no-pager
 sudo systemctl restart kubelet
 ```
 
+### 9.6 如何动态增删节点？
+
+KubeKey v4 原生支持对已有集群动态添加和移除节点，无需重建集群。
+
+**添加节点：**
+
+在 `inventory.yaml` 中定义新节点的连接信息后执行：
+
+```bash
+# 自动识别 inventory 中未加入集群的节点并安装
+kk add nodes -i inventory.yaml -c config.yaml
+
+# 或指定分组
+kk add nodes --group kube_worker -i inventory.yaml -c config.yaml
+```
+
+> 支持同时添加 control plane、worker、etcd 节点。
+
+**删除节点：**
+
+```bash
+# 安全移除指定节点（自动 cordon → drain → 清理 Calico → 删除）
+kk delete nodes node1 node2 -i inventory.yaml -c config.yaml
+```
+
+KubeKey 自动执行：
+1. `cordon` 禁止新 Pod 调度
+2. `drain` 驱逐现有工作负载
+3. 清理 Calico 网络资源（若使用 Calico）
+4. 删除 etcd 成员（若为 etcd 节点）
+5. 从集群中移除该节点
+6. 卸载 K8s 组件和容器运行时
+
+**关键限制：**
+
+- 待操作节点必须预先在 `inventory.yaml` 中定义了连接信息（SSH 地址、密码/密钥）
+- 删除 control plane 节点时，集群中**至少保留一个可用**的控制平面
+- Web Installer 安装的集群需先导出配置：`cp kubekey/runtime/.../inventories/default/default.yaml kkv4-inventory.yaml`
+- `kk delete nodes` 支持 `--all` 清理所有集群组件、`--with-data` 删除数据目录（慎用）
+
 ---
 
 ## 10. 版本选择参考
