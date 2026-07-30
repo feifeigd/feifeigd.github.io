@@ -163,7 +163,7 @@ EOF
 ### 2.5 验证系统兼容性
 
 ```bash
-# 检查内核版本（>= 3.10 可跑 K8s v1.27，>= 5.4 推荐跑 K8s v1.34）
+# 检查内核版本（>= 3.10 可跑 K8s v1.31，>= 5.4 推荐跑 K8s v1.34）
 uname -r
 
 # 验证内核模块已加载
@@ -206,8 +206,8 @@ kk version
 kk create inventory -o .
 
 # 生成安装配置（指定 K8s 版本）
-# === 保守方案（CentOS 7 原内核）===
-kk create config --with-kubernetes v1.27.16 -o .
+# === 保守方案（CentOS 7 原内核，K8s v1.31.x）===
+kk create config --with-kubernetes v1.31.0 -o .
 
 # === 推荐方案（已升级内核）===
 kk create config --with-kubernetes v1.34.3 -o .
@@ -557,16 +557,16 @@ sudo systemctl restart kubelet
 
 | K8s 版本 | 最低内核 | 推荐内核 | 备注 |
 |----------|---------|---------|------|
-| v1.27.x | 3.10 | 3.10 | 最后原生兼容 CentOS 7 的版本 |
+| v1.27.x | 3.10 | 3.10 | 已 EOL，不推荐使用 |
 | v1.28.x | 3.10 | 4.x+ | 部分新特性需新内核 |
 | v1.29.x | 3.10 | 4.x+ | |
 | v1.30.x | 3.10 | 4.x+ | |
-| v1.31.x | 3.10 | 4.x+ | |
-| v1.32.x | 3.10 | 4.x+ | |
+| v1.31.x | 3.10 | 4.x+ | 原内核 3.10 可用的最新版（containerd 自动 1.7） |
+| v1.32.x | 3.10 | 4.x+ | 需手动钉住 containerd 1.7 才能跑在 3.10 |
 | v1.33.x | 4.x | 5.x+ | Cgroup v2 等特性需要 |
 | v1.34.x | 4.x | 5.4+ | 推荐使用最新 |
 
-> **建议**：在 CentOS 7 上部署 K8s v1.34.x，**务必先升级内核至 5.4+**。如果不想升级内核，选择 K8s v1.27.x 配合 `kk create config --with-kubernetes v1.27.16`。
+> **建议**：在 CentOS 7 上部署 K8s v1.34.x，**务必先升级内核至 5.4+**。如果不想升级内核，选择 K8s v1.31.x 配合 `kk create config --with-kubernetes v1.31.0`。
 
 ---
 
