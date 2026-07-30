@@ -10,5 +10,6 @@
 
 ## 专题
 
+- [OpenKruiseGame 游戏服管理套件](./openkruise-game.md) ← 游戏云原生
 - [Taint / Toleration 与 GPU 调度](./taint-toleration-gpu.md)
 - [Cilium Gateway API 入门](./hello-Cilium-Gateway/README.md)
