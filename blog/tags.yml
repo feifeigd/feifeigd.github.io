@@ -115,11 +115,12 @@ performance:
   description: 性能优化
 
 security:
+  label: Security
+  permalink: /security
+  description: AI 安全相关
+
 prompt-injection:
   label: Prompt Injection
   permalink: /prompt-injection
   description: Prompt Injection 安全相关文章
-  label: Security
-  permalink: /security
-  description: AI 安全相关
 
