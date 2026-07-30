@@ -22,11 +22,20 @@
 
 CentOS 7 默认内核 3.10.0 缺少 Kubernetes 依赖的部分内核特性（如 `tcp_cork` 优化、cgroup v2 支持等）。**K8s v1.28+ 官方建议内核 >= 4.x**，生产环境建议升级到 **5.4+**。
 
-| 场景 | K8s 版本 | 内核要求 | 操作量 |
-|------|----------|---------|--------|
-| 保守 | v1.27.x | 3.10 即可（需确认 containerd 兼容） | 少 |
-| 最优（推荐） | v1.34.x | 升级到 5.4+ | 中等 |
-| 激进 | v1.34.x + Cilium eBPF | 5.10+ | 较多 |
+真正的限制不在 K8s 本身，而在 **containerd 版本**：
+- containerd **≤ 1.7.x** 支持 cgroup v1 / kernel 3.10
+- containerd **2.0+** 已删除 cgroup v1 支持，要求 cgroup v2 + 内核 >= 4.x
+
+所以 kernel 3.10 上最高 K8s 版本 = **同时满足「containerd ≤ 1.7」的最高 K8s 版本**。KubeKey 的默认版本号自动匹配 containerd 版本，你只需选择合适的 K8s 小版本即可：
+
+| 场景 | K8s 版本 | 内核要求 | containerd | 操作量 |
+|------|----------|---------|------------|--------|
+| 保守（原内核） | v1.31.x | 3.10 即可 | 自动 1.7.x | 少 |
+| 稳妥（原内核 + 钉住版本） | v1.34.x | 3.10 + **手动钉住 containerd 1.7** | 手动锁定 1.7.x | 中等 |
+| 最优（推荐） | v1.34.x | 升级到 5.4+ | 自动 2.x | 中等 |
+| 激进 + eBPF | v1.34.x + Cilium eBPF | 5.10+ | 自动 2.x | 较多 |
+
+> K8s v1.31.x 是最后一个**默认用 containerd 1.7** 的版本，也是 kernel 3.10 上最省心的方案。如果选 v1.34.x，必须在 `config.yaml` 中显式指定 `containerd_version: v1.7.25`。
 
 ---
 
@@ -287,6 +296,8 @@ spec:
 
   kubernetes:
     kube_version: v1.34.3          # ← 当前最新稳定版
+                                   # 保守（原内核 3.10）：改为 v1.31.6
+                                   # 并取消下方 containerd_version 的注释
     helm_version: v3.18.5          # ← Helm 最新
     sandbox_image:
       tag: "3.10.1"                # ← pause 镜像最新
