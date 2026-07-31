@@ -203,6 +203,69 @@ kubectl patch ingress -n cattle-system rancher \
 
 首次初始化要安装 fleet / rancher-provisioning-capi 等系统组件，会生成多个 `helm-operation-*` pod。等待 2-5 分钟，`kubectl get pods -n cattle-system` 全部 Running 后恢复正常。
 
+**但如果 helm-operation 大量 Error 且报 `Timeout waiting for kubernetes` / `Waiting for Kubernetes API to be available`，且 `kubectl get pods -n fleet-system` 一直为空，说明是集群 DNS 挂了，不是 Rancher 的问题。** 排查见下方"集群 DNS 全挂"章节。
+
+### Q：集群 DNS 全挂（pod 解析不了 kubernetes.default.svc）
+
+**症状**：
+- Rancher 的 `helm-operation-*` 全部 `Timeout waiting for kubernetes`
+- 任意 pod 内 `nslookup kubernetes.default.svc` 超时或 NXDOMAIN
+- CoreDNS 正常 Running，但返回空答案
+
+**根因链（实测踩坑，三连击）**：
+
+1. **kube-dns Service 的 ClusterIP 与 kubelet 期望不一致**：kubelet 默认注入 pod 的 nameserver 是 `10.233.0.10`（serviceSubnet 的默认 dnsIP），但 kube-dns Service 实际 ClusterIP 可能是别的（如 `10.233.30.144`）→ pod 拿着错误的 DNS 地址。
+   ```bash
+   # 验证
+   grep clusterDNS /var/lib/kubelet/config.yaml
+   kubectl get svc -n kube-system kube-dns
+   ```
+   **修复**：重建 Service 为 kubelet 期望的 IP：
+   ```bash
+   kubectl delete svc kube-dns -n kube-system
+   kubectl apply -f - <<'EOF'
+   apiVersion: v1
+   kind: Service
+   metadata:
+     name: kube-dns
+     namespace: kube-system
+   spec:
+     clusterIP: 10.233.0.10
+     ports:
+     - name: dns
+       port: 53
+       protocol: UDP
+       targetPort: 53
+     - name: dns-tcp
+       port: 53
+       protocol: TCP
+       targetPort: 53
+     selector:
+       k8s-app: kube-dns
+   EOF
+   ```
+
+2. **Service 缺 UDP 53 端口**（用 `kubectl create svc clusterip --tcp=53:53` 只会建 TCP）：DNS 查询走 UDP，补上：
+   ```bash
+   kubectl patch svc kube-dns -n kube-system --type=json \
+     -p '[{"op":"add","path":"/spec/ports/-","value":{"name":"dns-udp","port":53,"protocol":"UDP","targetPort":53}}]'
+   ```
+
+3. **CoreDNS Deployment 是"空壳"**（手动搭建集群时用简化清单创建）：没有 `serviceAccountName`、没有 `-conf` 参数、没有 Corefile 挂载 → kubernetes 插件连不上 API，返回空答案/NXDOMAIN。
+   ```bash
+   # 诊断：看 deployment 里有没有 serviceAccountName / args / volumeMounts
+   kubectl get deploy -n kube-system coredns -o yaml | grep -E 'serviceAccount|args|config-volume'
+   ```
+   **修复**：用标准 kubeadm 清单重写（含 `serviceAccountName: coredns`、`args: [-conf, /etc/coredns/Corefile]`、Corefile configMap 挂载、`dnsPolicy: Default`），详见 [CoreDNS 官方部署](https://github.com/coredns/deployment/tree/master/kubernetes)。注意 selector 不可变，需先删旧 Deployment 再 apply。
+
+**验证**：
+```bash
+kubectl run dns-test --rm -i --restart=Never --image=busybox:1.36 \
+  --command -- sh -c 'nslookup kubernetes.default.svc'
+# 宿主机侧（装了 bind-utils 后）
+dig @10.233.0.10 kubernetes.default.svc.cluster.local +short
+```
+
 ---
 
 ## 参考链接
