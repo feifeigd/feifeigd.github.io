@@ -69,20 +69,19 @@ kubectl get crd | grep kruise
 ```
 
 > **版本说明**：Kruise v1.8.0 是 2026 年中的稳定版本。OpenKruiseGame v1.1.0 对 Kruise 版本的兼容范围参见 [OKG 官方文档](https://openkruise.io/en-US/docs/game/installation)。
-
 ---
 
 ## 第二步：安装 OpenKruiseGame
 
 ```bash
-# 添加 OKG 仓库（如未添加过）
-helm repo add openkruisegame https://openkruise.github.io/openkruisegame/
+# 注意：OKG 的 chart 已并入 openkruise 主仓库，无需单独添加仓库
+# （旧的独立仓库 https://openkruise.github.io/openkruisegame/ 已废弃，返回 404）
 
-# 更新仓库
-helm repo update
+# 更新仓库（openkruise 仓库已包含 kruise-game chart）
+helm repo update openkruise
 
 # 安装 OKG v1.1.0
-helm install kruise-game openkruisegame/kruise-game --version 1.1.0 \
+helm install kruise-game openkruise/kruise-game --version 1.1.0 \
   --namespace kruise-game-system \
   --create-namespace
 ```
@@ -245,7 +244,7 @@ OPS 状态变更不影响 Pod 生命周期，只影响控制器对 Pod 的编排
 ### 升级 OKG
 
 ```bash
-helm upgrade kruise-game openkruisegame/kruise-game --version 1.1.0
+helm upgrade kruise-game openkruise/kruise-game --version 1.1.0 --namespace kruise-game-system
 ```
 
 ### 升级 Kruise
@@ -279,6 +278,42 @@ helm uninstall kruise -n kruise-system
 helm list -A
 helm status kruise-game -n kruise-game-system
 ```
+
+### Q：安装报 `namespaces "... already exists"` 且 release 显示 failed
+
+这是 **Helm 3.13 的已知竞态**：`--create-namespace` 创建了 namespace，但随后的资源创建又误判它已存在。实际资源（Deployment、CRD）通常已创建成功。
+
+```bash
+# 确认资源实际已就绪
+kubectl get pods -n kruise-game-system
+kubectl get crd | grep game
+
+# 刷新 release 状态为 deployed（无需重装）
+helm upgrade kruise-game openkruise/kruise-game --version 1.1.0 --namespace kruise-game-system
+```
+
+### Q：安装后 Kruise controller 一直 CrashLoopBackOff（webhook 引导死锁）
+
+首次安装时 Kruise 的 webhook（`mpod.kb.io`）会拦截**所有** Pod 创建，包括它自己的 controller —— 形成死锁：Pod 起不来 → webhook service 无 endpoint → 所有 Pod 创建失败。事件报错形如：
+
+```
+Error creating: ... failed calling webhook "mpod.kb.io": Post "https://kruise-webhook-service.kruise-system.svc:443/mutate-pod...": connection refused
+```
+
+解法（分两步）：
+
+```bash
+# 1. 临时删掉 webhook 配置，放行 controller Pod 创建
+kubectl delete validatingwebhookconfiguration kruise-validating-webhook-configuration
+kubectl delete mutatingwebhookconfiguration kruise-mutating-webhook-configuration
+
+# 等待 controller 起来（kubectl get pods -n kruise-system 全部 Running）
+
+# 2. 用 helm upgrade 重建 webhook 配置（此时 service 已有 endpoint，不再死锁）
+helm upgrade kruise openkruise/kruise --version 1.8.0 --namespace kruise-system
+```
+
+> 注意：Kruise 的 webhook controller 只**更新**配置、不**创建**，所以删掉的配置必须靠 helm 重新渲染，不能只等 controller 自愈。
 
 ### Q：GameServer 始终 NotReady
 

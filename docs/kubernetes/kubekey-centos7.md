@@ -456,10 +456,10 @@ helm repo update
 helm install kruise openkruise/kruise --version 1.8.0 \
   --namespace kruise-system --create-namespace
 
-# ── 2. 安装 OpenKruiseGame ──
-helm repo add openkruisegame https://openkruise.github.io/openkruisegame/
-helm repo update
-helm install kruise-game openkruisegame/kruise-game --version 1.1.0 \
+# ── 2. 安装 OpenKruiseGame（chart 已并入 openkruise 主仓库） ──
+#    注意：独立的 openkruisegame 仓库（https://openkruise.github.io/openkruisegame/）已废弃（404），
+#    直接用 openkruise 仓库中的 openkruise/kruise-game chart 即可
+helm install kruise-game openkruise/kruise-game --version 1.1.0 \
   --namespace kruise-game-system --create-namespace
 
 # ── 3. 验证 ──
@@ -467,6 +467,8 @@ kubectl get pods -n kruise-system
 kubectl get pods -n kruise-game-system
 kubectl get crd | grep -E 'kruise|game'
 ```
+
+> **⚠️ 已知坑（Helm 3.13）**：`--create-namespace` 偶发报 `namespaces "... already exists"` 导致 release 显示 `failed`，但资源实际已创建成功。此时无需重装，执行 `helm upgrade <name> <chart> --namespace <ns>` 刷新状态即可（见 [OpenKruiseGame 安装与配置指南](./openkruise-game.md) 常见问题）。
 
 > 详细配置（GameServerSet 部署、热更新、网络模式等）见 [OpenKruiseGame 安装与配置指南](./openkruise-game.md)。
 
@@ -623,6 +625,23 @@ sudo kubeadm reset -f
 sudo rm -rf /etc/kubernetes /var/lib/etcd /var/lib/kubelet
 sudo systemctl restart containerd
 # 清理 CNI
-sudo ip link delete cni0 2>/dev/null || true
+```
 sudo ip link delete flannel.1 2>/dev/null || true
 ```
+
+---
+
+## 12. 附录：手动安装方案
+
+> KubeKey v4.x 在 CentOS 7（systemd 219 / kernel 3.10）上有多个已知问题。如果自动安装受阻，可参考手动方案。
+
+KubeKey 走不通的核心原因：
+
+| 问题 | 场景 | 解决方案 |
+|------|------|---------|
+| `systemctl --value` | 所有 CentOS 7 | 替换 `/usr/bin/systemctl` 为 wrapper |
+| 内核版本检查失败 | 所有 CentOS 7 (kernel 3.10) | `--ignore-preflight-errors=SystemVerification` |
+| `init_kubernetes_node` nil | KubeKey v4.x | 跳过 KubeKey，手动 `kubeadm init` |
+| `ID cannot be empty` | Flannel/Calico on 3.10 | 换用 Weave Net CNI |
+
+完整手动安装文档：[CentOS 7 手动安装 Kubernetes](./centos7-manual-install.md)
