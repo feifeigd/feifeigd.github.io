@@ -124,3 +124,13 @@ prompt-injection:
   permalink: /prompt-injection
   description: Prompt Injection 安全相关文章
 
+kubernetes:
+  label: Kubernetes
+  permalink: /kubernetes
+  description: Kubernetes 集群与运维相关
+
+openebs:
+  label: OpenEBS
+  permalink: /openebs
+  description: OpenEBS 存储相关
+
