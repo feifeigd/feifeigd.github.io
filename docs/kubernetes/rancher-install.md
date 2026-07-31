@@ -266,6 +266,28 @@ kubectl run dns-test --rm -i --restart=Never --image=busybox:1.36 \
 dig @10.233.0.10 kubernetes.default.svc.cluster.local +short
 ```
 
+### Q：普通 pod 全挤到 master 节点（CPU 被打满）
+
+**症状**：某 workload（如 Minecraft StatefulSet 多副本）全部调度到 control-plane 节点，多进程叠加把 CPU 打满（`uptime` 显示 load 上百），Rancher 等组件被挤崩（startup probe 失败循环重启）。
+
+**根因**：手动 kubeadm init 的集群，master 节点**缺少 `node-role.kubernetes.io/control-plane:NoSchedule` taint**。标准 K8s 集群里该 taint 由 kubeadm 自动添加（阻止普通 pod 调度到 master），手动搭建时可能缺失，导致调度器把普通 workload 也塞到 master。
+
+**诊断**：
+```bash
+# 如果 Taints 为空 = 缺少 taint（错误状态）
+kubectl get node <master> -o jsonpath='{.spec.taints}'
+# 正确状态应显示：control-plane:NoSchedule
+```
+
+**修复**（安全：NoSchedule 只阻止新调度，不影响已在跑的 pod）：
+```bash
+kubectl taint nodes <master> node-role.kubernetes.io/control-plane:NoSchedule
+# 验证
+kubectl get node <master> -o jsonpath='{.spec.taints}'
+```
+
+**注意**：系统组件（etcd/apiserver/controller-manager/scheduler 静态 pod、kube-proxy/weave DaemonSet）自带容忍或不受调度器影响，加 taint 无副作用。若已有普通 workload 跑在 master 上，需自行删除重建使其重调度到 worker。
+
 ---
 
 ## 参考链接
