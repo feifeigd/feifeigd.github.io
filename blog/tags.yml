@@ -134,3 +134,13 @@ openebs:
   permalink: /openebs
   description: OpenEBS 存储相关
 
+training:
+  label: Training
+  permalink: /training
+  description: 模型训练与分布式训练相关
+
+eval:
+  label: Eval
+  permalink: /eval
+  description: 模型评测与基准测试相关
+
