@@ -144,3 +144,8 @@ eval:
   permalink: /eval
   description: 模型评测与基准测试相关
 
+multimodal:
+  label: Multimodal
+  permalink: /multimodal
+  description: 多模态（视觉、语音）相关
+
