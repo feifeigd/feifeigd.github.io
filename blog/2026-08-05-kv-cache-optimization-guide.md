@@ -66,7 +66,7 @@ vllm serve Qwen/Qwen2.5-72B-Instruct \
 
 KV 量化是典型的「显存换带宽」：KV 变小 → 同显存可缓存更多 token/请求 → 吞吐上升，代价是精度损失。主流方案：
 
-- **FP8 KV Cache**：NVIDIA Hopper/Ada 硬件原生支持，KV 占用直接减半。vLLM 的官方实现报告多数任务相对 fp16 差异 <0.5%，长上下文场景建议配合回归评测使用。
+- **FP8 KV Cache**：NVIDIA Hopper/Ada 硬件原生支持，KV 占用直接减半。vLLM 的官方实现报告多数任务相对 fp16 差异不到 0.5%，长上下文场景建议配合回归评测使用。
 - **KIVI（2-bit K / 4-bit V，2024）**：对 K 做 per-channel 量化、V 做 per-token 量化，并保留少量高精度 outlier 通道。70B 模型在 4-bit KV 下质量接近 fp16，KV 占用降到约 1/4。
 - **KVQuant（3/4-bit 非均匀，2024）**：per-channel K + per-token V，配合非均匀量化与 dense-sparse 结构，针对长上下文做了专门校准，论文报告单卡吞吐可提升 3–5 倍。
 
