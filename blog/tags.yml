@@ -149,3 +149,8 @@ multimodal:
   permalink: /multimodal
   description: 多模态（视觉、语音）相关
 
+observability:
+  label: Observability
+  permalink: /observability
+  description: LLM 应用可观测性与监控相关
+
