@@ -154,3 +154,28 @@ observability:
   permalink: /observability
   description: LLM 应用可观测性与监控相关
 
+hermes:
+  label: Hermes
+  permalink: /hermes
+  description: Hermes Agent 相关
+
+git:
+  label: Git
+  permalink: /git
+  description: Git 版本控制相关
+
+backup:
+  label: Backup
+  permalink: /backup
+  description: 数据备份与恢复
+
+devops:
+  label: DevOps
+  permalink: /devops
+  description: DevOps 运维实践
+
+tooling:
+  label: Tooling
+  permalink: /tooling
+  description: 开发工具相关
+
