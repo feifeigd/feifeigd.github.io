@@ -179,3 +179,23 @@ tooling:
   permalink: /tooling
   description: 开发工具相关
 
+ssh:
+  label: SSH
+  permalink: /ssh
+  description: SSH 隧道、端口转发、远程连接相关
+
+proxy:
+  label: Proxy
+  permalink: /proxy
+  description: 代理、科学上网相关
+
+clash:
+  label: Clash
+  permalink: /clash
+  description: Clash 代理客户端相关
+
+network:
+  label: Network
+  permalink: /network
+  description: 网络配置与调优
+
