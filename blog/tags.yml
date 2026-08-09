@@ -199,3 +199,13 @@ network:
   permalink: /network
   description: 网络配置与调优
 
+comfyui:
+  label: ComfyUI
+  permalink: /comfyui
+  description: ComfyUI 工作流与部署
+
+video-generation:
+  label: Video Generation
+  permalink: /video-generation
+  description: AI 视频生成相关
+
