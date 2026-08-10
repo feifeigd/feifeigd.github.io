@@ -7,7 +7,7 @@ categories: ["Tech"]
 description: "想让 LLM 稳定输出 JSON？本文系统讲解从 JSON-mode prompt 到 grammar-based decoding 的四种方案，附实测数据和技术选型建议。"
 ---
 
-> 这是 Function Calling 系列的第三篇。前两篇讲了 [Function Calling 诞生的背景](/blog/2026-07-14-function-calling-background)和[角色、字段与报文处理](/blog/2026-07-23-function-calling-implementation-guide)。本文聚焦一个更底层的问题：**怎么让 LLM 输出结构化的、可解析的、格式正确的数据？**
+> 这是 Function Calling 系列的第三篇。前两篇讲了 [Function Calling 诞生的背景](/blog/2026/07/14/function-calling-background)和[角色、字段与报文处理](/blog/2026/07/23/function-calling-implementation-guide)。本文聚焦一个更底层的问题：**怎么让 LLM 输出结构化的、可解析的、格式正确的数据？**
 
 {/* truncate */}
 
@@ -459,5 +459,5 @@ result = ExtractionResult.model_validate_json(outputs[0].outputs[0].text)
 ---
 
 *系列文章：*
-- [Function Calling 诞生的背景](/blog/2026-07-14-function-calling-background)
-- [Function Calling 实践指南：角色、字段与报文处理全解析](/blog/2026-07-23-function-calling-implementation-guide)
+- [Function Calling 诞生的背景](/blog/2026/07/14/function-calling-background)
+- [Function Calling 实践指南：角色、字段与报文处理全解析](/blog/2026/07/23/function-calling-implementation-guide)
