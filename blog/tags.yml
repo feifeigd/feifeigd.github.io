@@ -219,3 +219,13 @@ vector-database:
   permalink: /vector-database
   description: 向量数据库相关
 
+interview:
+  label: Interview
+  permalink: /interview
+  description: 面试题与解答
+
+transformer:
+  label: Transformer
+  permalink: /transformer
+  description: Transformer 架构相关
+
