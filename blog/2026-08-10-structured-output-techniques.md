@@ -180,8 +180,8 @@ response_format={
 
 | 模型 | JSON Mode 误格式率 | Strict Mode 误格式率 |
 |------|-------------------|---------------------|
-| GPT-4o | ~3% | <0.1% |
-| GPT-4o-mini | ~8% | <1% |
+| GPT-4o | ~3% | \<0.1% |
+| GPT-4o-mini | ~8% | \<1% |
 | Claude 3.5 Sonnet | ~2% | 不支持 strict mode |
 | DeepSeek V3 | ~5% | 不支持 |
 
