@@ -209,3 +209,8 @@ video-generation:
   permalink: /video-generation
   description: AI 视频生成相关
 
+structured-output:
+  label: Structured Output
+  permalink: /structured-output
+  description: 结构化输出技术相关
+
