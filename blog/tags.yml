@@ -214,3 +214,8 @@ structured-output:
   permalink: /structured-output
   description: 结构化输出技术相关
 
+vector-database:
+  label: Vector DB
+  permalink: /vector-database
+  description: 向量数据库相关
+

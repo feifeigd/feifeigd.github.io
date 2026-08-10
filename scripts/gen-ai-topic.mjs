@@ -99,6 +99,14 @@ mindmap
     AI 应用层
       RAG 检索增强生成
         向量数据库
+          Milvus
+          Pinecone
+          Qdrant
+          Weaviate
+          Chroma
+          FAISS
+          pgvector
+          Elasticsearch
         Embedding 模型
         检索策略
       AI Agent
