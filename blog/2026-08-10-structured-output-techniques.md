@@ -88,7 +88,7 @@ prompt = """
 prompt = """
 请以严格 JSON 格式返回，不要有任何额外文字。
 输出必须能被 Python json.loads() 直接解析。
-格式：{"name": "...", "age": <int>, "skills": ["..."]}
+格式：{"name": "...", "age": int 类型, "skills": ["..."]}
 """
 ```
 
@@ -180,8 +180,8 @@ response_format={
 
 | 模型 | JSON Mode 误格式率 | Strict Mode 误格式率 |
 |------|-------------------|---------------------|
-| GPT-4o | ~3% | \<0.1% |
-| GPT-4o-mini | ~8% | \<1% |
+| GPT-4o | ~3% | 低于 0.1% |
+| GPT-4o-mini | ~8% | 低于 1% |
 | Claude 3.5 Sonnet | ~2% | 不支持 strict mode |
 | DeepSeek V3 | ~5% | 不支持 |
 
