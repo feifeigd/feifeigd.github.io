@@ -229,3 +229,18 @@ transformer:
   permalink: /transformer
   description: Transformer 架构相关
 
+backend:
+  label: Backend
+  permalink: /backend
+  description: 后端开发与分布式系统
+
+redis:
+  label: Redis
+  permalink: /redis
+  description: Redis 相关技术
+
+distributed:
+  label: Distributed
+  permalink: /distributed
+  description: 分布式系统相关
+
