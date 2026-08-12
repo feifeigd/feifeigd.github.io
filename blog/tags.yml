@@ -244,3 +244,8 @@ distributed:
   permalink: /distributed
   description: 分布式系统相关
 
+system-design:
+  label: System Design
+  permalink: /system-design
+  description: 系统设计面试题
+
