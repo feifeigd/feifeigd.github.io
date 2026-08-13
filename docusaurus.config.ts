@@ -23,7 +23,19 @@ const config: Config = {
     mermaid: true,
   },
 
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: [
+    '@docusaurus/theme-mermaid',
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        language: ['zh', 'en'],
+        indexBlog: true,
+        indexDocs: true,
+        indexPages: true,
+      },
+    ],
+  ],
 
   i18n: {
     defaultLocale: 'zh-Hans',
