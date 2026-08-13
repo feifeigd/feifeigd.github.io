@@ -40,6 +40,7 @@ const config: Config = {
         },
         blog: {
           showReadingTime: true,
+          blogSidebarCount: 'ALL',
           feedOptions: {
             type: 'all',
             xslt: true,
