@@ -24,6 +24,11 @@ agent:
   permalink: /agent
   description: AI Agent 相关
 
+memory:
+  label: Memory
+  permalink: /memory
+  description: Agent 记忆系统相关
+
 mcp:
   label: MCP
   permalink: /mcp
