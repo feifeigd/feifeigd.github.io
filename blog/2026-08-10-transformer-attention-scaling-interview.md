@@ -1,6 +1,6 @@
 ---
 title: "面试题：Transformer 的 Attention 机制为什么用缩放点积，而不是直接点积？"
-date: 2026-08-13T09:00:00+08:00
+date: 2026-08-10T09:00:00+08:00
 draft: false
 tags: ["ai", "llm", "transformer", "interview"]
 categories: ["Interview"]
@@ -203,4 +203,4 @@ class ScaledDotProductAttention(nn.Module):
 
 ---
 
-*明日预告：后端题 —「消息队列怎么保证消息不丢？」*
+*明日预告：后端题 —「Redis 分布式锁怎么实现？Redlock 有什么问题？」*
