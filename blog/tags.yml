@@ -119,6 +119,11 @@ performance:
   permalink: /performance
   description: 性能优化
 
+quantization:
+  label: Quantization
+  permalink: /quantization
+  description: 模型量化相关
+
 security:
   label: Security
   permalink: /security
