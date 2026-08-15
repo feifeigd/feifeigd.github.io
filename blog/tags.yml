@@ -259,3 +259,8 @@ system-design:
   permalink: /system-design
   description: 系统设计面试题
 
+message-queue:
+  label: Message Queue
+  permalink: /message-queue
+  description: 消息队列相关
+
