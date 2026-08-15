@@ -34,6 +34,11 @@ mcp:
   permalink: /mcp
   description: Model Context Protocol
 
+a2a:
+  label: A2A
+  permalink: /a2a
+  description: Agent-to-Agent Protocol
+
 vllm:
   label: vLLM
   permalink: /vllm
