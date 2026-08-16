@@ -274,3 +274,13 @@ message-queue:
   permalink: /message-queue
   description: 消息队列相关
 
+lora:
+  label: LoRA
+  permalink: /lora
+  description: LoRA/QLoRA 参数高效微调相关
+
+peft:
+  label: PEFT
+  permalink: /peft
+  description: 参数高效微调（PEFT）技术相关
+
