@@ -24,6 +24,11 @@ agent:
   permalink: /agent
   description: AI Agent 相关
 
+multi-agent:
+  label: Multi-Agent
+  permalink: /multi-agent
+  description: 多 Agent 协作与编排相关
+
 memory:
   label: Memory
   permalink: /memory
