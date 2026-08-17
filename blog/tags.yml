@@ -74,6 +74,11 @@ function-calling:
   permalink: /function-calling
   description: 函数调用相关
 
+coding:
+  label: Coding
+  permalink: /coding
+  description: AI 辅助编程与 Coding Agent 相关
+
 rag:
   label: RAG
   permalink: /rag
