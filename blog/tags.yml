@@ -284,3 +284,8 @@ peft:
   permalink: /peft
   description: 参数高效微调（PEFT）技术相关
 
+embedding:
+  label: Embedding
+  permalink: /embedding
+  description: Embedding 模型、向量表示与量化相关
+
