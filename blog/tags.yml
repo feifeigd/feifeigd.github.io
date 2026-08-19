@@ -294,3 +294,8 @@ embedding:
   permalink: /embedding
   description: Embedding 模型、向量表示与量化相关
 
+kv-cache:
+  label: KV Cache
+  permalink: /kv-cache
+  description: KV Cache 与长上下文推理优化
+
