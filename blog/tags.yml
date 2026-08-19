@@ -299,3 +299,8 @@ kv-cache:
   permalink: /kv-cache
   description: KV Cache 与长上下文推理优化
 
+linux:
+  label: Linux
+  permalink: /linux
+  description: Linux 内核与系统相关
+
