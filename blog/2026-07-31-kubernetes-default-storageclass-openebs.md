@@ -1,5 +1,5 @@
 ---
-slug: /blog/2026/07/31/kubernetes-default-storageclass-openebs
+slug: /2026/07/31/kubernetes-default-storageclass-openebs
 title: Kubernetes 默认 StorageClass — OpenEBS 安装
 date: 2026-07-31
 tags: [kubernetes, openebs, storage]
