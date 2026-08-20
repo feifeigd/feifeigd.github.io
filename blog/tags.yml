@@ -299,6 +299,11 @@ kv-cache:
   permalink: /kv-cache
   description: KV Cache 与长上下文推理优化
 
+transaction:
+  label: Transaction
+  permalink: /transaction
+  description: 分布式事务与一致性相关
+
 linux:
   label: Linux
   permalink: /linux
