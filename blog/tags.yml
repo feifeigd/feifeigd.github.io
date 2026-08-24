@@ -309,3 +309,8 @@ linux:
   permalink: /linux
   description: Linux 内核与系统相关
 
+speculative-decoding:
+  label: Speculative Decoding
+  permalink: /speculative-decoding
+  description: 投机解码与推理加速相关
+
