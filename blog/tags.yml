@@ -319,3 +319,33 @@ feed:
   permalink: /feed
   description: Feed 流与时间线系统设计
 
+lobe-chat:
+  label: LobeChat
+  permalink: /lobe-chat
+  description: LobeChat AI 聊天助手部署与使用
+
+docker:
+  label: Docker
+  permalink: /docker
+  description: Docker 容器化部署相关
+
+deployment:
+  label: Deployment
+  permalink: /deployment
+  description: 模型与系统部署方案
+
+llama-cpp:
+  label: llama.cpp
+  permalink: /llama-cpp
+  description: llama.cpp 与 GGUF 本地推理
+
+finetuning:
+  label: Fine-tuning
+  permalink: /finetuning
+  description: 模型微调相关
+
+distillation:
+  label: Distillation
+  permalink: /distillation
+  description: 模型蒸馏相关
+
