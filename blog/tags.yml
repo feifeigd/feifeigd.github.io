@@ -349,3 +349,8 @@ distillation:
   permalink: /distillation
   description: 模型蒸馏相关
 
+prompt-engineering:
+  label: Prompt Engineering
+  permalink: /prompt-engineering
+  description: Prompt 工程：System Prompt 设计、推理模型提示与缓存感知
+
