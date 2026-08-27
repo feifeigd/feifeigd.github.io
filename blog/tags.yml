@@ -354,3 +354,8 @@ prompt-engineering:
   permalink: /prompt-engineering
   description: Prompt 工程：System Prompt 设计、推理模型提示与缓存感知
 
+idempotency:
+  label: Idempotency
+  permalink: /idempotency
+  description: 接口幂等：重复支付、消息重投、请求重试相关
+
