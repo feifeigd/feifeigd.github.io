@@ -364,3 +364,8 @@ collaboration:
   label: Collaboration
   permalink: /collaboration
   description: 实时协作编辑：OT、CRDT、协同文档系统设计
+
+tts:
+  label: TTS
+  permalink: /tts
+  description: 语音合成（TTS）与流式语音合成工程
