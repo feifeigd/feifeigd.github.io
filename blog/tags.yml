@@ -369,3 +369,8 @@ tts:
   label: TTS
   permalink: /tts
   description: 语音合成（TTS）与流式语音合成工程
+
+rate-limiting:
+  label: Rate Limiting
+  permalink: /rate-limiting
+  description: 限流：令牌桶、滑动窗口、分布式限流
