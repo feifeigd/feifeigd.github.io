@@ -374,3 +374,8 @@ rate-limiting:
   label: Rate Limiting
   permalink: /rate-limiting
   description: 限流：令牌桶、滑动窗口、分布式限流
+
+url-shortener:
+  label: URL Shortener
+  permalink: /url-shortener
+  description: 短链接系统：短码生成、301/302 重定向、读写分离架构
