@@ -384,3 +384,8 @@ url-shortener:
   label: URL Shortener
   permalink: /url-shortener
   description: 短链接系统：短码生成、301/302 重定向、读写分离架构
+
+tokenizer:
+  label: Tokenizer
+  permalink: /tokenizer
+  description: 分词器与 BPE：词表预算、token 计费、缓存命中与数字切分
