@@ -19,6 +19,11 @@ llm:
   permalink: /llm
   description: 大语言模型相关
 
+moe:
+  label: MoE
+  permalink: /moe
+  description: 混合专家模型（Mixture of Experts）与稀疏激活相关
+
 agent:
   label: Agent
   permalink: /agent
