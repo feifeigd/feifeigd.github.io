@@ -389,3 +389,8 @@ tokenizer:
   label: Tokenizer
   permalink: /tokenizer
   description: 分词器与 BPE：词表预算、token 计费、缓存命中与数字切分
+
+sharding:
+  label: Sharding
+  permalink: /sharding
+  description: 分库分表：分片规则、在线扩容、数据迁移与一致性校验
