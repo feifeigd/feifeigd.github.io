@@ -394,3 +394,8 @@ sharding:
   label: Sharding
   permalink: /sharding
   description: 分库分表：分片规则、在线扩容、数据迁移与一致性校验
+
+mysql:
+  label: MySQL
+  permalink: /mysql
+  description: MySQL 索引、存储引擎与查询优化相关
