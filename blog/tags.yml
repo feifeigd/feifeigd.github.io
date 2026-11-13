@@ -169,6 +169,11 @@ training:
   permalink: /training
   description: 模型训练与分布式训练相关
 
+preference-optimization:
+  label: Preference Optimization
+  permalink: /preference-optimization
+  description: 偏好优化（DPO/GRPO/RLHF）相关
+
 eval:
   label: Eval
   permalink: /eval
