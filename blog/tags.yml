@@ -404,3 +404,8 @@ mysql:
   label: MySQL
   permalink: /mysql
   description: MySQL 索引、存储引擎与查询优化相关
+
+rl:
+  label: RL
+  permalink: /rl
+  description: 强化学习：策略梯度、信用分配与多轮 Agent 训练
