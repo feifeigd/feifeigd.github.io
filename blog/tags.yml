@@ -409,3 +409,13 @@ rl:
   label: RL
   permalink: /rl
   description: 强化学习：策略梯度、信用分配与多轮 Agent 训练
+
+mvcc:
+  label: MVCC
+  permalink: /mvcc
+  description: 多版本并发控制：undo 版本链、Read View 与快照读
+
+innodb:
+  label: InnoDB
+  permalink: /innodb
+  description: InnoDB 存储引擎：行格式、事务、锁与死锁分析
