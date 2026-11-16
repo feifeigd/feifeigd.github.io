@@ -186,4 +186,4 @@ MCP 的价值在于把"工具发现 + 能力协商 + 上下文同步"标准化�
 
 ---
 
-实验代码（纯标准库，可直接跑）：`server.py`（按行分帧、每请求一线程）、`server_pool.py`（32 线程池）、`server_sync.py`（内联对照）、`client.py`（`id` 拆包 + 崩溃唤醒）、`bench_tools.py`（`cl100k_base` 数 token）。环境：WSL2、Python 3.11.15、本地管道，两个独立 CPython 进程；数字是这对 client/server 组合的上限，不代表 Rust/Go 实现的绝对吞吐。
+实验代码：一套纯标准库的最小实现（`server.py` 按行分帧、`server_pool.py` 线程池、`server_sync.py` 内联对照、`client.py` 按 `id` 拆包并处理传输死亡），每个文件 60 到 90 行；文中给出的片段就是关键部分——加锁写 stdout、按 `id` 匹配、崩溃时唤醒等待者，都是十几行的事，照抄即可。token 计数用 `tiktoken` 的 `cl100k_base`，schema 文本原样喂进去。环境：WSL2、Python 3.11.15、本地管道、两个独立 CPython 进程；数字是这对 client/server 组合的上限，不代表 Rust/Go 实现的绝对吞吐。
