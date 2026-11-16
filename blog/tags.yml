@@ -419,3 +419,8 @@ innodb:
   label: InnoDB
   permalink: /innodb
   description: InnoDB 存储引擎：行格式、事务、锁与死锁分析
+
+scheduler:
+  label: Scheduler
+  permalink: /scheduler
+  description: 延迟任务调度：时间轮、延时队列、分片抢占与幂等补偿
