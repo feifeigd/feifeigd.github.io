@@ -424,3 +424,13 @@ scheduler:
   label: Scheduler
   permalink: /scheduler
   description: 延迟任务调度：时间轮、延时队列、分片抢占与幂等补偿
+
+gateway:
+  label: Gateway
+  permalink: /gateway
+  description: 网关与代理：多租户隔离、配额准入、路由与失败转移
+
+billing:
+  label: Billing
+  permalink: /billing
+  description: 计费与成本：用量计量、预扣结算、毛利归因
