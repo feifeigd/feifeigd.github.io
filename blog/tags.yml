@@ -444,3 +444,148 @@ etcd:
   label: etcd
   permalink: /etcd
   description: etcd：Raft、lease 租约、revision 单调序号与线性一致读
+
+gitea:
+  label: Gitea
+  permalink: /gitea
+  description: Gitea：自建 Git 托管、内置 OCI 镜像仓库与 Actions Runner
+
+cicd:
+  label: CI/CD
+  permalink: /cicd
+  description: CI/CD：流水线设计、构建发布与自建 Runner
+
+go:
+  label: Go
+  permalink: /go
+  description: Go：并发模型、标准库与服务端工程实践
+
+android:
+  label: Android
+  permalink: /android
+  description: Android 客户端、打包与移动端工程实践
+
+benchmark:
+  label: Benchmark
+  permalink: /benchmark
+  description: 基准测试方法、对比数据与性能结论
+
+containerd:
+  label: containerd
+  permalink: /containerd
+  description: 容器运行时、镜像拉取与 nerdctl 实践
+
+frontend:
+  label: Frontend
+  permalink: /frontend
+  description: 前端框架、工程化与构建
+
+gb200:
+  label: GB200
+  permalink: /gb200
+  description: NVIDIA GB200 NVL72 硬件规格与成本拆解
+
+harbor:
+  label: Harbor
+  permalink: /harbor
+  description: 企业级镜像仓库：项目隔离、RBAC 与复制
+
+hardware:
+  label: Hardware
+  permalink: /hardware
+  description: 硬件选型、算力网络与成本
+
+harness:
+  label: Harness
+  permalink: /harness
+  description: Agent Harness：工具调用、上下文与执行环境
+
+hbuilderx:
+  label: HBuilderX
+  permalink: /hbuilderx
+  description: DCloud 官方 IDE 与 CLI 离线打包
+
+hermes-agent:
+  label: Hermes Agent
+  permalink: /hermes-agent
+  description: Nous Research 的 Agent 框架与工具链
+
+infrastructure:
+  label: Infrastructure
+  permalink: /infrastructure
+  description: 基础设施与自建平台
+
+langchain:
+  label: LangChain
+  permalink: /langchain
+  description: Chain / Agent 编排框架实践
+
+mlops:
+  label: MLOps
+  permalink: /mlops
+  description: 模型交付、部署与线上可观测
+
+mobile-development:
+  label: Mobile Development
+  permalink: /mobile-development
+  description: 移动端开发与跨端打包
+
+nerdctl:
+  label: nerdctl
+  permalink: /nerdctl
+  description: containerd 原生容器 CLI 与 docker 兼容层
+
+nvidia:
+  label: NVIDIA
+  permalink: /nvidia
+  description: NVIDIA GPU 与软件栈
+
+qdrant:
+  label: Qdrant
+  permalink: /qdrant
+  description: 向量数据库、相似度检索与索引调优
+
+react:
+  label: React
+  permalink: /react
+  description: React 生态与工程实践
+
+registry:
+  label: Registry
+  permalink: /registry
+  description: 镜像仓库与 OCI 分发协议
+
+sdk:
+  label: SDK
+  permalink: /sdk
+  description: SDK 集成、版本兼容与打包
+
+uni-app:
+  label: uni-app
+  permalink: /uni-app
+  description: DCloud 跨端框架与离线打包
+
+video-script:
+  label: Video Script
+  permalink: /video-script
+  description: 视频脚本、分镜与配音
+
+vscode:
+  label: VS Code
+  permalink: /vscode
+  description: 编辑器配置、插件与远程开发
+
+vue:
+  label: Vue
+  permalink: /vue
+  description: Vue 生态与工程实践
+
+workflow:
+  label: Workflow
+  permalink: /workflow
+  description: 工作流编排与自动化
+
+wsl:
+  label: WSL
+  permalink: /wsl
+  description: Windows Subsystem for Linux 与主机互操作
