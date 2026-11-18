@@ -434,3 +434,13 @@ billing:
   label: Billing
   permalink: /billing
   description: 计费与成本：用量计量、预扣结算、毛利归因
+
+zookeeper:
+  label: ZooKeeper
+  permalink: /zookeeper
+  description: ZooKeeper：临时顺序节点、watch 语义、session 与羊群效应
+
+etcd:
+  label: etcd
+  permalink: /etcd
+  description: etcd：Raft、lease 租约、revision 单调序号与线性一致读
