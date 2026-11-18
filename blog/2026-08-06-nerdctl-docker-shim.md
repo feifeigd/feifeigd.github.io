@@ -1,5 +1,4 @@
 ---
-slug: /blog/2026/08/06/nerdctl-docker-shim
 title: 没有 docker daemon 的节点，怎么让 docker 命令照常工作？
 date: 2026-08-06
 draft: false

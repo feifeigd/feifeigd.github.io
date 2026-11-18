@@ -1,5 +1,4 @@
 ---
-slug: /blog/2026/08/13/graph-rag-deep-dive
 title: "Graph RAG 深度解析：当知识图谱遇上 RAG"
 tags: [ai, llm, rag, architecture, engineering]
 ---

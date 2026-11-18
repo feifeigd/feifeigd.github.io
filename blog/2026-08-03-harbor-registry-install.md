@@ -1,5 +1,4 @@
 ---
-slug: /blog/2026/08/03/harbor-registry-install
 title: Harbor 私有镜像仓库搭建 — k8s + 宝塔 + ingress-nginx 完整实录
 date: 2026-08-03
 draft: false
