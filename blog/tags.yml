@@ -589,3 +589,14 @@ wsl:
   label: WSL
   permalink: /wsl
   description: Windows Subsystem for Linux 与主机互操作
+
+
+argocd:
+  label: Argo CD
+  permalink: /argocd
+  description: Argo CD：GitOps 持续交付、Application 与同步策略
+
+gitops:
+  label: GitOps
+  permalink: /gitops
+  description: GitOps：以 Git 为唯一事实源的声明式部署
