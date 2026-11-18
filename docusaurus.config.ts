@@ -95,6 +95,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/k8s',
+          label: 'K8s专题',
+          position: 'left',
+        },
+        {
           to: '/blog',
           label: '博客',
           position: 'left',
