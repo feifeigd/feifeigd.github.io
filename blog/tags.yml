@@ -600,3 +600,8 @@ gitops:
   label: GitOps
   permalink: /gitops
   description: GitOps：以 Git 为唯一事实源的声明式部署
+
+search:
+  label: Search
+  permalink: /search
+  description: 搜索引擎与检索系统：索引结构、分片与排序
